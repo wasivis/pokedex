@@ -1,2 +1,2 @@
-# pokedex
+# pokedex-interactivo
 Created with CodeSandbox
