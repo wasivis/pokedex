@@ -3,7 +3,12 @@ import "./styles.css";
 import Navbar from "../components/Navbar";
 import Searchbar from "../components/Searchbar";
 import Pokedex from "../components/Pokedex";
-import { getPokemonData, getPokemons, searchPokemon } from "../api";
+import {
+	getPokemonData,
+	getPokemons,
+	searchPokemon,
+	getPokemonsSpecies
+} from "../api";
 import { FavoriteProvider } from "../contexts/favoritesContext";
 
 const { useState, useEffect } = React;
@@ -83,6 +88,10 @@ export default function App() {
 		setSearching(false);
 	};
 
+	useEffect(() => {
+		document.title = "Pokedex";
+	}, []);
+
 	return (
 		<FavoriteProvider
 			value={{
@@ -95,9 +104,7 @@ export default function App() {
 				<div className="App">
 					<Searchbar onSearch={onSearch} />
 					{notFound ? (
-						<div className="not-found-text">
-							¡No existe un Pokemon con ese nombre!
-						</div>
+						<div className="not-found-text">That Pokemon doesn't exist!</div>
 					) : (
 						<Pokedex
 							loading={loading}

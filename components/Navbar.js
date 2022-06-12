@@ -9,6 +9,10 @@ const Navbar = () => {
 
 	console.log(favoritePokemons);
 
+	const defaultMessage = "Todavía no tienes Pokemons favoritos";
+	const tooltiptext =
+		favoritePokemons === null ? defaultMessage : favoritePokemons;
+
 	return (
 		<nav>
 			<div />
@@ -16,7 +20,14 @@ const Navbar = () => {
 				<Logo />
 			</div>
 			<div className="favorites">
-				Favorites &#10084;&#65039; {favoritePokemons.length}
+				Favorites
+				<div className="heart-tooltip">
+					<span role="img" aria-label="xxxx">
+						&#10084;&#65039;
+					</span>
+					<span className="tooltip-text">{tooltiptext}</span>
+				</div>
+				<div className="favorite-number">{favoritePokemons.length}</div>
 			</div>
 		</nav>
 	);

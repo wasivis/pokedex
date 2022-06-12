@@ -10,10 +10,19 @@ const Pokemon = (props) => {
 	const redHeart = "❤️";
 	const whiteHeart = "🤍";
 	const heart = favoritePokemons.includes(pokemon.name) ? redHeart : whiteHeart;
+
 	const clickHeart = (e) => {
 		e.preventDefault();
 		updateFavoritePokemons(pokemon.name);
 	};
+
+	const pokemonType = pokemon.types.map((type, idx) => {
+		return (
+			<div key={idx} id="type-box" className={type.type.name}>
+				{type.type.name}
+			</div>
+		);
+	});
 
 	return (
 		<div className="pokemon-card">
@@ -27,18 +36,10 @@ const Pokemon = (props) => {
 			<div className="card-body">
 				<div className="card-top">
 					<h3>{pokemon.name}</h3>
-					<div>#{pokemon.id}</div>
+					<div className="pokemon-id">#{pokemon.id}</div>
 				</div>
 				<div className="card-bottom">
-					<div className="pokemon-type">
-						{pokemon.types.map((type, idx) => {
-							return (
-								<div key={idx} className="pokemon-type-text">
-									{type.type.name}
-								</div>
-							);
-						})}
-					</div>
+					<div className="pokemon-type">{pokemonType}</div>
 					<button onClick={clickHeart} className="favorite-btn">
 						<div className="favorite-heart">{heart}</div>
 					</button>

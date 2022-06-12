@@ -1,6 +1,8 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
 * {
 	margin: 0px;
-	font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+	font-family: Poppins;
 }
 
 body {
@@ -11,15 +13,17 @@ nav {
 	height: 120px;
 	display: flex;
 	flex-direction: row;
-	justify-content: space-evenly;
+	flex-wrap: wrap;
 	align-items: center;
-	padding-left: 110px;
+	justify-content: space-around;
+	padding-left: 162px;
+	padding-bottom: 30px;
 }
 
 .favorites {
 	display: flex;
-	justify-content: space-between;
-	font-size: 20px;
+	font-size: 25px;
+	align-items: center;
 }
 
 .searchbar-container {
@@ -35,12 +39,13 @@ nav {
 	background: #ffffff;
 	padding-right: 20px;
 	flex: 1;
+	border-radius: 12px;
 }
 
 .searchbar input {
 	padding: 10px;
 	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
-	border-radius: 3px;
+	border-radius: 12px;
 	border: none;
 	width: 100%;
 	font-size: 20px;
@@ -53,7 +58,7 @@ nav {
 .searchbar-btn button {
 	background-color: #363636;
 	border: none;
-	border-radius: 10px;
+	border-radius: 12px;
 	height: 100%;
 	color: white;
 	padding: 10px 12px;
@@ -70,6 +75,7 @@ nav {
 	justify-content: center;
 	align-items: center;
 	padding: 10px;
+	font-size: 20px;
 }
 
 .pokedex-grid {
@@ -116,6 +122,11 @@ nav {
 
 .card-top h3 {
 	font-size: 24px;
+	font-weight: bold;
+}
+
+.pokemon-id {
+	font-size: 22px;
 }
 
 .card-bottom {
@@ -134,15 +145,6 @@ nav {
 	text-transform: capitalize;
 }
 
-.pokemon-type {
-	display: flex;
-}
-
-.pokemon-type-text {
-	margin-right: 10px;
-	font-size: 18px;
-}
-
 .favorite-btn {
 	background-color: #ffffff;
 	border: none;
@@ -150,7 +152,7 @@ nav {
 
 .favorite-heart {
 	font-size: 20px;
-	border-radius: 6px;
+	border-radius: 8px;
 }
 
 .favorite-heart:hover {
@@ -169,7 +171,7 @@ nav {
 
 .not-found-text {
 	text-align: center;
-	font-size: 1.25rem;
+	font-size: 24px;
 	padding: 100px;
 }
 
@@ -224,4 +226,158 @@ nav {
 	100% {
 		transform: rotate(360deg);
 	}
+}
+
+.heart-tooltip {
+	position: relative;
+	display: inline-block;
+	padding-left: 15px;
+}
+
+.heart-tooltip .tooltip-text {
+	visibility: hidden;
+	width: 90px;
+	background-color: #363636;
+	color: #fff;
+	text-align: center;
+	border-radius: 12px;
+	padding: 5px;
+	font-size: 20px;
+	position: absolute;
+	z-index: 1;
+	top: 100%;
+	left: 50%;
+	margin-left: -45px;
+	opacity: 0;
+	transition: opacity 2s;
+	text-transform: capitalize;
+}
+
+.heart-tooltip:hover .tooltip-text {
+	visibility: visible;
+	opacity: 1;
+}
+
+.favorite-number {
+	padding-left: 2px;
+}
+
+.pokemon-type {
+	display: flex;
+}
+
+#type-box {
+	padding: 3px;
+	border-radius: 10px;
+	margin-right: 10px;
+	font-size: 18px;
+	margin-top: 5px;
+}
+
+.grass {
+	background: #a7db8d;
+	border: 2px solid #3d7422;
+	color: #3d7422;
+}
+
+.water {
+	background: #9db7f5;
+	border: 2px solid #223a72;
+	color: #223a72;
+}
+
+.fire {
+	background: #f5ac78;
+	border: 2px solid #a11e15;
+	color: #a11e15;
+}
+
+.poison {
+	background: #dba2db;
+	border: 2px solid #682a68;
+	color: #682a68;
+}
+
+.bug {
+	background: #c6d16e;
+	border: 2px solid #6d7815;
+	color: #6d7815;
+}
+
+.flying {
+	background: #c6b7f5;
+	border: 2px solid #5b4c8a;
+	color: #5b4c8a;
+}
+
+.normal {
+	background: #c6c6a7;
+	border: 2px solid #505039;
+	color: #505039;
+}
+
+.electric {
+	background: #fae078;
+	border: 2px solid #756318;
+	color: #756318;
+}
+
+.ground {
+	background: #ebd09d;
+	border: 2px solid #795a2c;
+	color: #795a2c;
+}
+
+.fairy {
+	background: #f4bdc9;
+	border: 2px solid #79444f;
+	color: #79444f;
+}
+
+.fighting {
+	background: #d6817d;
+	border: 2px solid #66130f;
+	color: #66130f;
+}
+
+.ghost {
+	background: #a292bc;
+	border: 2px solid #493963;
+	color: #493963;
+}
+
+.psychic {
+	background: #fa92b2;
+	border: 2px solid #d4285b;
+	color: #d4285b;
+}
+
+.rock {
+	background: #d1c17d;
+	border: 2px solid #786824;
+	color: #786824;
+}
+
+.steel {
+	background: #d1d1e0;
+	border: 2px solid #464652;
+	color: #464652;
+}
+
+.ice {
+	background: #bce6e6;
+	border: 2px solid #638d8d;
+	color: #638d8d;
+}
+
+.dragon {
+	background: #ad8cfc;
+	border: 2px solid #361583;
+	color: #361583;
+}
+
+.dark {
+	background: #a29288;
+	border: 2px solid #30251f;
+	color: #30251f;
 }
