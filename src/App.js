@@ -3,7 +3,7 @@ import "./styles.css";
 import Navbar from "../components/Navbar";
 import Searchbar from "../components/Searchbar";
 import Pokedex from "../components/Pokedex";
-import { getPokemonData, getPokemons, searchPokemon } from "../api";
+import { getPokemonData, getPokemon, searchPokemon } from "../api";
 import { FavoriteProvider } from "../contexts/favoritesContext";
 import Footer from "../components/Footer";
 
@@ -12,7 +12,7 @@ const { useState, useEffect } = React;
 const localStorageKey = "favorite_pokemon";
 
 export default function App() {
-	const [pokemons, setPokemons] = useState([]);
+	const [pokemon, setPokemon] = useState([]);
 	const [page, setPage] = useState(0);
 	const [total, setTotal] = useState(0);
 	const [loading, setLoading] = useState(true);
@@ -20,38 +20,38 @@ export default function App() {
 	const [notFound, setNotFound] = useState(false);
 	const [searching, setSearching] = useState(false);
 
-	const fetchPokemons = async () => {
+	const fetchPokemon = async () => {
 		try {
 			setLoading(true);
-			const data = await getPokemons(24, 24 * page);
+			const data = await getPokemon(24, 24 * page);
 			const promises = data.results.map(async (pokemon) => {
 				return await getPokemonData(pokemon.url);
 			});
 			const results = await Promise.all(promises);
-			setPokemons(results);
+			setPokemon(results);
 			setLoading(false);
 			setTotal(Math.ceil(data.count / 25));
 			setNotFound(false);
 		} catch (err) {}
 	};
 
-	const loadFavoritePokemons = () => {
-		const pokemons =
+	const loadFavoritePokemon = () => {
+		const pokemon =
 			JSON.parse(window.localStorage.getItem(localStorageKey)) || [];
-		setFavorites(pokemons);
+		setFavorites(pokemon);
 	};
 
 	useEffect(() => {
-		loadFavoritePokemons();
+		loadFavoritePokemon();
 	}, []);
 
 	useEffect(() => {
 		if (!searching) {
-			fetchPokemons();
+			fetchPokemon();
 		}
 	}, [page]);
 
-	const updateFavoritePokemons = (name) => {
+	const updateFavoritePokemon = (name) => {
 		const updated = [...favorites];
 		const isFavorite = updated.indexOf(name);
 		if (isFavorite >= 0) {
@@ -65,7 +65,7 @@ export default function App() {
 
 	const onSearch = async (pokemon) => {
 		if (!pokemon) {
-			return fetchPokemons();
+			return fetchPokemon();
 		}
 		setLoading(true);
 		setNotFound(false);
@@ -76,7 +76,7 @@ export default function App() {
 			setLoading(false);
 			return;
 		} else {
-			setPokemons([result]);
+			setPokemon([result]);
 			setPage(0);
 			setTotal(1);
 		}
@@ -91,8 +91,8 @@ export default function App() {
 	return (
 		<FavoriteProvider
 			value={{
-				favoritePokemons: favorites,
-				updateFavoritePokemons: updateFavoritePokemons
+				favoritePokemon: favorites,
+				updateFavoritePokemon: updateFavoritePokemon
 			}}
 		>
 			<div>
@@ -104,7 +104,7 @@ export default function App() {
 					) : (
 						<Pokedex
 							loading={loading}
-							pokemons={pokemons}
+							pokemon={pokemon}
 							page={page}
 							setPage={setPage}
 							total={total}

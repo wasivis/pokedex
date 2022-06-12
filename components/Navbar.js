@@ -5,13 +5,11 @@ import { Logo } from "./LogoPng";
 const { useContext } = React;
 
 const Navbar = () => {
-	const { favoritePokemons } = useContext(FavoriteContext);
+	const { favoritePokemon } = useContext(FavoriteContext);
 
-	console.log(favoritePokemons);
-
-	const defaultMessage = "Todavía no tienes Pokemons favoritos";
+	const defaultMessage = "You don't any favorite Pokemon yet!";
 	const tooltiptext =
-		favoritePokemons === null ? defaultMessage : favoritePokemons;
+		favoritePokemon === null ? defaultMessage : favoritePokemon;
 
 	return (
 		<nav>
@@ -27,7 +25,7 @@ const Navbar = () => {
 					</span>
 					<span className="tooltip-text">{tooltiptext}</span>
 				</div>
-				<div className="favorite-number">{favoritePokemons.length}</div>
+				<div className="favorite-number">{favoritePokemon.length}</div>
 			</div>
 		</nav>
 	);

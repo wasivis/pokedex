@@ -3,7 +3,7 @@ import Pagination from "./Pagination";
 import Pokemon from "./Pokemon";
 
 const Pokedex = (props) => {
-	const { pokemons, page, setPage, total, loading } = props;
+	const { pokemon, page, setPage, total, loading } = props;
 
 	const lastPage = () => {
 		const nextPage = Math.max(page - 1, 0);
@@ -34,7 +34,7 @@ const Pokedex = (props) => {
 				</div>
 			) : (
 				<div className="pokedex-grid">
-					{pokemons.map((pokemon, idx) => {
+					{pokemon.map((pokemon, idx) => {
 						return <Pokemon pokemon={pokemon} key={pokemon.name} />;
 					})}
 				</div>

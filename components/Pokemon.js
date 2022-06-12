@@ -3,17 +3,17 @@ import FavoriteContext from "../contexts/favoritesContext";
 
 const Pokemon = (props) => {
 	const { pokemon } = props;
-	const { favoritePokemons, updateFavoritePokemons } = useContext(
+	const { favoritePokemon, updateFavoritePokemon } = useContext(
 		FavoriteContext
 	);
 
 	const redHeart = "❤️";
 	const whiteHeart = "🤍";
-	const heart = favoritePokemons.includes(pokemon.name) ? redHeart : whiteHeart;
+	const heart = favoritePokemon.includes(pokemon.name) ? redHeart : whiteHeart;
 
 	const clickHeart = (e) => {
 		e.preventDefault();
-		updateFavoritePokemons(pokemon.name);
+		updateFavoritePokemon(pokemon.name);
 	};
 
 	const pokemonType = pokemon.types.map((type, idx) => {
