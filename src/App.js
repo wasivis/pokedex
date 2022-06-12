@@ -3,13 +3,9 @@ import "./styles.css";
 import Navbar from "../components/Navbar";
 import Searchbar from "../components/Searchbar";
 import Pokedex from "../components/Pokedex";
-import {
-	getPokemonData,
-	getPokemons,
-	searchPokemon,
-	getPokemonsSpecies
-} from "../api";
+import { getPokemonData, getPokemons, searchPokemon } from "../api";
 import { FavoriteProvider } from "../contexts/favoritesContext";
+import Footer from "../components/Footer";
 
 const { useState, useEffect } = React;
 
@@ -115,6 +111,7 @@ export default function App() {
 						/>
 					)}
 				</div>
+				<Footer />
 			</div>
 		</FavoriteProvider>
 	);
