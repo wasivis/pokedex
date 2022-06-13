@@ -236,7 +236,6 @@ nav {
 
 .heart-tooltip .tooltip-text {
 	visibility: hidden;
-	width: 90px;
 	background-color: #363636;
 	color: #fff;
 	text-align: center;
@@ -250,7 +249,6 @@ nav {
 	margin-left: -45px;
 	opacity: 0;
 	transition: opacity 2s;
-	text-transform: capitalize;
 }
 
 .heart-tooltip:hover .tooltip-text {

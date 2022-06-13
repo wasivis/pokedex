@@ -4,12 +4,19 @@ import { Logo } from "./LogoPng";
 
 const { useContext } = React;
 
+const defaultMessage = "You don't any favorite Pokemon yet!";
+
+function capitalizeName(name) {
+	return name.toString().replace(/\b(\w)/g, (s) => s.toUpperCase());
+}
+
 const Navbar = () => {
 	const { favoritePokemon } = useContext(FavoriteContext);
 
-	const defaultMessage = "You don't any favorite Pokemon yet!";
 	const tooltiptext =
-		favoritePokemon === null ? defaultMessage : favoritePokemon;
+		favoritePokemon.length === 0
+			? defaultMessage
+			: capitalizeName(favoritePokemon.join(" "));
 
 	return (
 		<nav>
