@@ -20,7 +20,7 @@ const Navbar = () => {
 
 	return (
 		<nav>
-			<div />
+			<div className="left-div" />
 			<div className="logo">
 				<Logo />
 			</div>

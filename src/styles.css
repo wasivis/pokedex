@@ -12,18 +12,21 @@ body {
 nav {
 	height: 120px;
 	display: flex;
-	flex-direction: row;
 	flex-wrap: wrap;
 	align-items: center;
 	justify-content: space-around;
-	padding-left: 162px;
 	padding-bottom: 30px;
 }
 
 .favorites {
-	display: flex;
 	font-size: 25px;
-	align-items: center;
+}
+
+.left-div,
+.logo,
+.favorites {
+	display: flex;
+	width: 200px;
 }
 
 .searchbar-container {
@@ -109,8 +112,8 @@ nav {
 }
 
 .pokemon-img {
-	width: 75px;
-	height: 75px;
+	width: 100px;
+	height: 100px;
 }
 
 .card-top {
