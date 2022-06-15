@@ -12,9 +12,10 @@ body {
 nav {
 	height: 120px;
 	display: flex;
-	flex-wrap: wrap;
 	align-items: center;
+	flex-direction: row;
 	justify-content: space-around;
+	flex-wrap: wrap;
 	padding-bottom: 30px;
 }
 
@@ -22,11 +23,17 @@ nav {
 	font-size: 25px;
 }
 
-.left-div,
+.favorites,
 .logo,
-.favorites {
+.left-div {
 	display: flex;
-	width: 200px;
+	flex: 0 1 200px;
+}
+
+@media (max-width: 800px) {
+	.left-div {
+		flex: 0 1 0px;
+	}
 }
 
 .searchbar-container {
