@@ -12,7 +12,7 @@ const Pagination = (props) => {
 				</div>
 			</button>
 			<div>
-				{page} de {totalPages}
+				{page} of {totalPages}
 			</div>
 			<button className="pagination-btn" onClick={onRightClick}>
 				<div className="icon">

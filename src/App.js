@@ -3,7 +3,12 @@ import "./styles.css";
 import Navbar from "./components/Navbar";
 import Searchbar from "./components/Searchbar";
 import Pokedex from "./components/Pokedex";
-import { getPokemonData, getPokemon, searchPokemon } from "./api";
+import {
+	getPokemonData,
+	getPokemon,
+	searchPokemon,
+	searchPokemonByType
+} from "./api";
 import { FavoriteProvider } from "./contexts/favoritesContext";
 import Footer from "./components/Footer";
 
@@ -19,19 +24,39 @@ export default function App() {
 	const [favorites, setFavorites] = useState([]);
 	const [notFound, setNotFound] = useState(false);
 	const [searching, setSearching] = useState(false);
+	const [selectedType, setSelectedType] = useState("all");
 
 	const fetchPokemon = async () => {
 		try {
 			setLoading(true);
-			const data = await getPokemon(24, 24 * page);
-			const promises = data.results.map(async (pokemon) => {
-				return await getPokemonData(pokemon.url);
-			});
-			const results = await Promise.all(promises);
-			setPokemon(results);
-			setLoading(false);
-			setTotal(Math.ceil(data.count / 25));
-			setNotFound(false);
+			var data = null;
+			var promises = null;
+			var selectType = selectedType.toLowerCase();
+			if (selectType === "all") {
+				data = await getPokemon(24, 24 * page);
+				promises = data.results.map(async (pokemon) => {
+					return await getPokemonData(pokemon.url);
+				});
+				const results = await Promise.all(promises);
+				setPokemon(results);
+				setLoading(false);
+				setTotal(Math.ceil(data.count / 25));
+				setNotFound(false);
+			} else {
+				const { length, data } = await searchPokemonByType(
+					selectType,
+					24,
+					24 * page
+				);
+				promises = data.map(async (pokemon) => {
+					return await getPokemonData(pokemon.pokemon.url);
+				});
+				const results = await Promise.all(promises);
+				setPokemon(results);
+				setLoading(false);
+				setTotal(Math.ceil(length / 25));
+				setNotFound(false);
+			}
 		} catch (err) {}
 	};
 
@@ -46,10 +71,8 @@ export default function App() {
 	}, []);
 
 	useEffect(() => {
-		if (!searching) {
-			fetchPokemon();
-		}
-	}, [page]);
+		fetchPokemon();
+	}, [page, selectedType]);
 
 	const updateFavoritePokemon = (name) => {
 		const updated = [...favorites];
@@ -74,7 +97,6 @@ export default function App() {
 		if (!result) {
 			setNotFound(true);
 			setLoading(false);
-			return;
 		} else {
 			setPokemon([result]);
 			setPage(0);
@@ -83,10 +105,6 @@ export default function App() {
 		setLoading(false);
 		setSearching(false);
 	};
-
-	useEffect(() => {
-		document.title = "Pokedex";
-	}, []);
 
 	return (
 		<FavoriteProvider
@@ -99,6 +117,39 @@ export default function App() {
 				<Navbar />
 				<div className="App">
 					<Searchbar onSearch={onSearch} />
+					<div className="filter-container">
+						<p>Filter by Type</p>
+						<select
+							className="selectType-box"
+							aria-label="Filter Pokemon By Type"
+							name="type-list"
+							value={selectedType}
+							onChange={(e) => {
+								setSelectedType(e.target.value);
+							}}
+						>
+							<option value="all">All</option>
+							<option value="bug">Bug</option>
+							<option value="dark">Dark</option>
+							<option value="dragon">Dragon</option>
+							<option value="electric">Electric</option>
+							<option value="fairy">Fairy</option>
+							<option value="fighting">Fighting</option>
+							<option value="fire">Fire</option>
+							<option value="flying">Flying</option>
+							<option value="ghost">Ghost</option>
+							<option value="grass">Grass</option>
+							<option value="ground">Ground</option>
+							<option value="ice">Ice</option>
+							<option value="normal">Normal</option>
+							<option value="poison">Poison</option>
+							<option value="psychic">Psychic</option>
+							<option value="rock">Rock</option>
+							<option value="steel">Steel</option>
+							<option value="water">Water</option>
+						</select>
+					</div>
+					/>
 					{notFound ? (
 						<div className="not-found-text">That Pokemon doesn't exist!</div>
 					) : (

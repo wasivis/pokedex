@@ -1,4 +1,4 @@
-import React from "react";
+import React /*, { useState }*/ from "react";
 import Pagination from "./Pagination";
 import Pokemon from "./Pokemon";
 

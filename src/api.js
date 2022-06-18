@@ -23,3 +23,13 @@ export const getPokemonData = async (url) => {
 		return data;
 	} catch (err) {}
 };
+
+export const searchPokemonByType = async (type, limit = 24, offset = 0) => {
+	try {
+		let url = `https://pokeapi.co/api/v2/type/${type}`;
+		const res = await fetch(url);
+		const data = await res.json();
+		var out = data.pokemon.slice(offset, offset + limit);
+		return { length: data.pokemon.length, data: out };
+	} catch (err) {}
+};
