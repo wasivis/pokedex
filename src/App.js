@@ -11,6 +11,7 @@ import {
 } from "./api";
 import { FavoriteProvider } from "./contexts/favoritesContext";
 import Footer from "./components/Footer";
+import Filter from "./components/Filters";
 
 const { useState, useEffect } = React;
 
@@ -106,6 +107,10 @@ export default function App() {
 		setSearching(false);
 	};
 
+	const handleTypeSelection = (e) => {
+		setSelectedType(e.target.value);
+	};
+
 	return (
 		<FavoriteProvider
 			value={{
@@ -117,39 +122,7 @@ export default function App() {
 				<Navbar />
 				<div className="App">
 					<Searchbar onSearch={onSearch} />
-					<div className="filter-container">
-						<p>Filter by Type</p>
-						<select
-							className="selectType-box"
-							aria-label="Filter Pokemon By Type"
-							name="type-list"
-							value={selectedType}
-							onChange={(e) => {
-								setSelectedType(e.target.value);
-							}}
-						>
-							<option value="all">All</option>
-							<option value="bug">Bug</option>
-							<option value="dark">Dark</option>
-							<option value="dragon">Dragon</option>
-							<option value="electric">Electric</option>
-							<option value="fairy">Fairy</option>
-							<option value="fighting">Fighting</option>
-							<option value="fire">Fire</option>
-							<option value="flying">Flying</option>
-							<option value="ghost">Ghost</option>
-							<option value="grass">Grass</option>
-							<option value="ground">Ground</option>
-							<option value="ice">Ice</option>
-							<option value="normal">Normal</option>
-							<option value="poison">Poison</option>
-							<option value="psychic">Psychic</option>
-							<option value="rock">Rock</option>
-							<option value="steel">Steel</option>
-							<option value="water">Water</option>
-						</select>
-					</div>
-					/>
+					<Filter setFilterType={handleTypeSelection} />
 					{notFound ? (
 						<div className="not-found-text">That Pokemon doesn't exist!</div>
 					) : (

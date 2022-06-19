@@ -1,5 +1,4 @@
-import React from "react";
-const { useState } = React;
+import React, { useState } from "react";
 
 const Searchbar = (props) => {
 	const { onSearch } = props;
