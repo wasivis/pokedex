@@ -4,7 +4,7 @@ import { Logo } from "./LogoPng";
 
 const { useContext } = React;
 
-const defaultMessage = "You don't any favorite Pokemon yet!";
+const defaultMessage = "You don't have any favorite Pokemon yet!";
 
 function capitalizeName(name) {
 	return name.toString().replace(/\b(\w)/g, (s) => s.toUpperCase());
@@ -25,7 +25,7 @@ const Navbar = () => {
 				<Logo />
 			</div>
 			<div className="favorites">
-				Favorites
+				<p>Favorites</p>
 				<div className="heart-tooltip">
 					<span role="img" aria-label="xxxx">
 						&#10084;&#65039;

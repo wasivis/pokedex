@@ -1,41 +1,46 @@
-import React, { useState } from "react";
+import React from "react";
 
-const Filter = ({ setFilterType }) => {
-	const setFilter = (e) => {
+const Filters = (props) => {
+	const { setFilterType, setFilterRegion, regions, types } = props;
+
+	const setType = (e) => {
 		setFilterType(e);
+	};
+
+	const setRegion = (e) => {
+		setFilterRegion(e);
 	};
 
 	return (
 		<div className="filter-container">
-			<p>Filter by Type</p>
-			<select
-				className="selectType-box"
-				aria-label="Filter Pokemon By Type"
-				name="type-list"
-				onChange={setFilter}
-			>
-				<option value="all">All</option>
-				<option value="bug">Bug</option>
-				<option value="dark">Dark</option>
-				<option value="dragon">Dragon</option>
-				<option value="electric">Electric</option>
-				<option value="fairy">Fairy</option>
-				<option value="fighting">Fighting</option>
-				<option value="fire">Fire</option>
-				<option value="flying">Flying</option>
-				<option value="ghost">Ghost</option>
-				<option value="grass">Grass</option>
-				<option value="ground">Ground</option>
-				<option value="ice">Ice</option>
-				<option value="normal">Normal</option>
-				<option value="poison">Poison</option>
-				<option value="psychic">Psychic</option>
-				<option value="rock">Rock</option>
-				<option value="steel">Steel</option>
-				<option value="water">Water</option>
-			</select>
+			<div className="type-filter-container">
+				<p>Filter by Type</p>
+				<select
+					className="selectType-box"
+					aria-label="Filter Pokemon By Type"
+					name="type-list"
+					onChange={setType}
+				>
+					{types.map((type, idx) => {
+						return <option value={idx}>{type.name}</option>;
+					})}
+				</select>
+			</div>
+			<div className="region-filter-container">
+				<p>Filter by Region</p>
+				<select
+					className="selectRegion-box"
+					aria-label="Filter Pokemon By Region"
+					name="region-list"
+					onChange={setRegion}
+				>
+					{regions.map((region, idx) => {
+						return <option value={idx}>{region.name}</option>;
+					})}
+				</select>
+			</div>
 		</div>
 	);
 };
 
-export default Filter;
+export default Filters;

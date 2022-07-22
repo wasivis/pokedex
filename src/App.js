@@ -3,15 +3,10 @@ import "./styles.css";
 import Navbar from "./components/Navbar";
 import Searchbar from "./components/Searchbar";
 import Pokedex from "./components/Pokedex";
-import {
-	getPokemonData,
-	getPokemon,
-	searchPokemon,
-	searchPokemonByType
-} from "./api";
+import { getPokemonData, getPokemon, searchPokemon } from "./api";
 import { FavoriteProvider } from "./contexts/favoritesContext";
 import Footer from "./components/Footer";
-import Filter from "./components/Filters";
+import Filters from "./components/Filters";
 
 const { useState, useEffect } = React;
 
@@ -19,47 +14,88 @@ const localStorageKey = "favorite_pokemon";
 
 export default function App() {
 	const [pokemon, setPokemon] = useState([]);
-	const [page, setPage] = useState(0);
-	const [total, setTotal] = useState(0);
+	const [allPokemon, setAllPokemon] = useState([]);
+	const [currentPage, setCurrentPage] = useState(1);
+	const [totalPages, setTotalPages] = useState();
+	const [pokemonPerPage] = useState(24);
 	const [loading, setLoading] = useState(true);
 	const [favorites, setFavorites] = useState([]);
 	const [notFound, setNotFound] = useState(false);
 	const [searching, setSearching] = useState(false);
-	const [selectedType, setSelectedType] = useState("all");
+	const regions = [
+		{ name: "All", startId: 1, endId: 898 },
+		{ name: "Kanto (Gen. 1)", startId: 1, endId: 151 },
+		{ name: "Johto (Gen. 2)", startId: 152, endId: 251 },
+		{ name: "Hoenn (Gen. 3)", startId: 252, endId: 386 },
+		{ name: "Sinnoh (Gen. 4)", startId: 387, endId: 493 },
+		{ name: "Unova (Gen. 5)", startId: 494, endId: 649 },
+		{ name: "Kalos (Gen. 6)", startId: 650, endId: 721 },
+		{ name: "Alola (Gen. 7)", startId: 722, endId: 809 },
+		{ name: "Galar (Gen. 8)", startId: 810, endId: 898 }
+	];
+	const types = [
+		{ name: "All" },
+		{ name: "Bug" },
+		{ name: "Dark" },
+		{ name: "Dragon" },
+		{ name: "Electric" },
+		{ name: "Fairy" },
+		{ name: "Fighting" },
+		{ name: "Fire" },
+		{ name: "Flying" },
+		{ name: "Ghost" },
+		{ name: "Grass" },
+		{ name: "Ground" },
+		{ name: "Ice" },
+		{ name: "Normal" },
+		{ name: "Poison" },
+		{ name: "Psychic" },
+		{ name: "Rock" },
+		{ name: "Steel" },
+		{ name: "Water" }
+	];
+	const [selectedRegion, setSelectedRegion] = useState(0);
+	const [selectedType, setSelectedType] = useState(0);
 
 	const fetchPokemon = async () => {
 		try {
 			setLoading(true);
 			var data = null;
 			var promises = null;
-			var selectType = selectedType.toLowerCase();
-			if (selectType === "all") {
-				data = await getPokemon(24, 24 * page);
-				promises = data.results.map(async (pokemon) => {
-					return await getPokemonData(pokemon.url);
-				});
-				const results = await Promise.all(promises);
-				setPokemon(results);
-				setLoading(false);
-				setTotal(Math.ceil(data.count / 25));
-				setNotFound(false);
-			} else {
-				const { length, data } = await searchPokemonByType(
-					selectType,
-					24,
-					24 * page
-				);
-				promises = data.map(async (pokemon) => {
-					return await getPokemonData(pokemon.pokemon.url);
-				});
-				const results = await Promise.all(promises);
-				setPokemon(results);
-				setLoading(false);
-				setTotal(Math.ceil(length / 25));
-				setNotFound(false);
-			}
+			data = await getPokemon();
+			promises = data.results.map(async (pokemon) => {
+				return await getPokemonData(pokemon.url);
+			});
+			const results = await Promise.all(promises);
+			setAllPokemon(results);
+			setPokemon(results);
+			setLoading(false);
+			setNotFound(false);
 		} catch (err) {}
 	};
+
+	useEffect(() => {
+		fetchPokemon();
+	}, []);
+
+	useEffect(() => {
+		const filteredPokemon = allPokemon
+			.filter((pokemon) => {
+				return (
+					pokemon.id >= regions[selectedRegion].startId &&
+					pokemon.id <= regions[selectedRegion].endId
+				);
+			})
+			.filter((pokemon) => {
+				if (selectedType < 1) {
+					return allPokemon;
+				}
+				return pokemon.types
+					.map((type) => type.type.name)
+					.includes(types[selectedType].name.toLowerCase());
+			});
+		setPokemon(filteredPokemon);
+	}, [selectedRegion, selectedType]);
 
 	const loadFavoritePokemon = () => {
 		const pokemon =
@@ -70,10 +106,6 @@ export default function App() {
 	useEffect(() => {
 		loadFavoritePokemon();
 	}, []);
-
-	useEffect(() => {
-		fetchPokemon();
-	}, [page, selectedType]);
 
 	const updateFavoritePokemon = (name) => {
 		const updated = [...favorites];
@@ -100,8 +132,8 @@ export default function App() {
 			setLoading(false);
 		} else {
 			setPokemon([result]);
-			setPage(0);
-			setTotal(1);
+			setCurrentPage(1);
+			setTotalPages(1);
 		}
 		setLoading(false);
 		setSearching(false);
@@ -110,6 +142,59 @@ export default function App() {
 	const handleTypeSelection = (e) => {
 		setSelectedType(e.target.value);
 	};
+
+	const handleRegionSelection = (e) => {
+		setSelectedRegion(e.target.value);
+	};
+
+	/*const pageTotal = pageTotalByRegionAndType(allPokemon);
+
+	function pageTotalByRegionAndType() {
+		if (selectedType < 1) {
+			return Math.ceil(
+				(regions[selectedRegion].endId - regions[selectedRegion].startId) / 24
+			);
+		} else if (selectedType >= 1) {
+			switch (types[selectedType].name) {
+				case "Ice":
+					return 2;
+				case "Dark":
+				case "Dragon":
+				case "Electric":
+				case "Fairy":
+				case "Fighting":
+				case "Fire":
+				case "Ghost":
+				case "Ground":
+				case "Poison":
+				case "Rock":
+				case "Steel":
+					return 3;
+				case "Bug":
+				case "Psychic":
+					return 4;
+				case "Flying":
+				case "Grass":
+				case "Normal":
+					return 5;
+				case "Water":
+					return 6;
+				default:
+					break;
+			}
+		}
+	}
+*/
+
+	const filterPageTotal = filterPageTotalByRegion(pokemon);
+
+	function filterPageTotalByRegion() {
+		return Math.ceil(pokemon.length / 24);
+	}
+
+	const indexOfLastRecord = currentPage * pokemonPerPage;
+	const indexOfFirstRecord = indexOfLastRecord - pokemonPerPage;
+	const currentPokemon = pokemon.slice(indexOfFirstRecord, indexOfLastRecord);
 
 	return (
 		<FavoriteProvider
@@ -122,16 +207,21 @@ export default function App() {
 				<Navbar />
 				<div className="App">
 					<Searchbar onSearch={onSearch} />
-					<Filter setFilterType={handleTypeSelection} />
+					<Filters
+						setFilterType={handleTypeSelection}
+						setFilterRegion={handleRegionSelection}
+						types={types}
+						regions={regions}
+					/>
 					{notFound ? (
 						<div className="not-found-text">That Pokemon doesn't exist!</div>
 					) : (
 						<Pokedex
 							loading={loading}
-							pokemon={pokemon}
-							page={page}
-							setPage={setPage}
-							total={total}
+							pokemon={currentPokemon}
+							currentPage={currentPage}
+							setCurrentPage={setCurrentPage}
+							totalPages={filterPageTotal}
 						/>
 					)}
 				</div>

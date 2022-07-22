@@ -5,7 +5,13 @@ import { faGithub } from "@fortawesome/free-brands-svg-icons";
 const Footer = () => {
 	return (
 		<footer className="footer">
-			<p>Copyright © Wasivis 2022</p>
+			<p>
+				Made with{" "}
+				<span role="img" aria-label="heart">
+					❤️
+				</span>{" "}
+				by Wasivis © 2022
+			</p>
 			<a href="https://www.github.com/wasivis/" target="”_blank”">
 				<FontAwesomeIcon icon={faGithub} beat className="githubIcon" />
 			</a>

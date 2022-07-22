@@ -23,6 +23,10 @@ nav {
 	font-size: 25px;
 }
 
+.favorites p {
+	text-decoration: underline;
+}
+
 .favorites,
 .logo,
 .left-div {
@@ -34,6 +38,12 @@ nav {
 	.left-div {
 		flex: 0 1 0px;
 	}
+}
+
+.loadingGif {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .searchbar-container {
@@ -90,19 +100,30 @@ nav {
 
 .filter-container {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	align-items: center;
+	justify-content: center;
 	margin: 10px 0 10px 0;
 }
 
-.filter-container p {
+.type-filter-container p,
+.region-filter-container p {
 	font-size: 18px;
 }
 
-.selectType-box {
+.selectType-box,
+.selectRegion-box {
 	display: flex;
-	width: 120px;
+	width: 150px;
 	font-size: 16px;
+}
+
+.type-filter-container {
+	margin-right: 20px;
+}
+
+.region-filter-container {
+	margin-left: 20px;
 }
 
 .pokedex-grid {
@@ -131,13 +152,9 @@ nav {
 	background-color: #ffffff;
 }
 
-.pokemon-img-container {
-	padding: 0px 5px;
-}
-
 .pokemon-img {
-	width: 100px;
-	height: 100px;
+	width: 125;
+	height: 125px;
 }
 
 .card-top {
@@ -148,12 +165,12 @@ nav {
 }
 
 .card-top h3 {
-	font-size: 24px;
+	font-size: 26px;
 	font-weight: bold;
 }
 
 .pokemon-id {
-	font-size: 22px;
+	font-size: 24px;
 }
 
 .card-bottom {
@@ -167,7 +184,7 @@ nav {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	padding: 10px 10px 10px 10px;
+	padding: 10px 20px 30px 10px;
 	flex: 1;
 	text-transform: capitalize;
 }
@@ -212,41 +229,29 @@ nav {
 	background-color: Transparent;
 }
 
-.lds-ring {
-	display: inline-block;
-	position: relative;
-	width: 120px;
-	height: 120px;
+.loading-icon-container {
+	display: flex;
+	justify-content: center;
 }
 
-.lds-ring div {
-	box-sizing: border-box;
+.loading-icon {
+	display: inline-block;
+	width: 80px;
+	height: 80px;
+}
+
+.loading-icon div {
+	content: " ";
 	display: block;
-	position: absolute;
 	width: 64px;
 	height: 64px;
 	margin: 8px;
-	border: 8px solid #fff;
 	border-radius: 50%;
-	animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-	border-color: #363636 transparent transparent transparent;
-	margin: auto;
-	left: 0;
-	right: 0;
-	top: 0;
-	bottom: 0;
-	position: fixed;
+	border: 6px solid #363636;
+	border-color: #363636 transparent #363636 transparent;
+	animation: lds-dual-ring 1.2s linear infinite;
 }
-.lds-ring div:nth-child(1) {
-	animation-delay: -0.45s;
-}
-.lds-ring div:nth-child(2) {
-	animation-delay: -0.3s;
-}
-.lds-ring div:nth-child(3) {
-	animation-delay: -0.15s;
-}
-@keyframes lds-ring {
+@keyframes lds-dual-ring {
 	0% {
 		transform: rotate(0deg);
 	}
@@ -268,11 +273,13 @@ nav {
 	text-align: center;
 	border-radius: 12px;
 	padding: 5px;
-	font-size: 20px;
+	width: 135px;
+	text-align: center;
+	font-size: 18px;
 	position: absolute;
 	z-index: 1;
 	top: 100%;
-	left: 50%;
+	left: 0%;
 	margin-left: -45px;
 	opacity: 0;
 	transition: opacity 2s;
@@ -411,7 +418,9 @@ nav {
 	padding: 10px 0 10px 0;
 	text-align: center;
 	width: 100%;
-	position: relative;
+	bottom: 0;
+	flex-shrink: 0;
+	margin-top: 20px;
 	display: flex;
 	align-items: center;
 	justify-content: center;

@@ -2,7 +2,7 @@ import React from "react";
 import { LeftArrow, RightArrow } from "./ArrowsPng";
 
 const Pagination = (props) => {
-	const { onLeftClick, onRightClick, page, totalPages } = props;
+	const { onLeftClick, onRightClick, currentPage, totalPages } = props;
 
 	return (
 		<div className="pagination">
@@ -12,7 +12,7 @@ const Pagination = (props) => {
 				</div>
 			</button>
 			<div>
-				{page} of {totalPages}
+				{currentPage} of {totalPages}
 			</div>
 			<button className="pagination-btn" onClick={onRightClick}>
 				<div className="icon">

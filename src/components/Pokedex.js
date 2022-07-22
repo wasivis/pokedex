@@ -1,37 +1,30 @@
-import React /*, { useState }*/ from "react";
+import React from "react";
 import Pagination from "./Pagination";
 import Pokemon from "./Pokemon";
+import { LoadingGif } from "./LoadingGif";
 
 const Pokedex = (props) => {
-	const { pokemon, page, setPage, total, loading } = props;
-
-	const lastPage = () => {
-		const nextPage = Math.max(page - 1, 0);
-		setPage(nextPage);
-	};
+	const { pokemon, currentPage, setCurrentPage, totalPages, loading } = props;
 
 	const nextPage = () => {
-		const nextPage = Math.min(page + 1, total - 1);
-		setPage(nextPage);
+		if (currentPage !== totalPages) setCurrentPage(currentPage + 1);
+	};
+	const previousPage = () => {
+		if (currentPage !== 1) setCurrentPage(currentPage - 1);
 	};
 
 	return (
 		<div>
 			<div className="header">
 				<Pagination
-					page={page + 1}
-					totalPages={total}
-					onLeftClick={lastPage}
+					currentPage={currentPage}
+					totalPages={totalPages}
+					onLeftClick={previousPage}
 					onRightClick={nextPage}
 				/>
 			</div>
 			{loading ? (
-				<div className="lds-ring">
-					<div></div>
-					<div></div>
-					<div></div>
-					<div></div>
-				</div>
+				<LoadingGif />
 			) : (
 				<div className="pokedex-grid">
 					{pokemon.map((pokemon, idx) => {
