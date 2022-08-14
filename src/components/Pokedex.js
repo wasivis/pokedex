@@ -1,10 +1,18 @@
 import React from "react";
 import Pagination from "./Pagination";
 import Pokemon from "./Pokemon";
-import { LoadingGif } from "./LoadingGif";
+import { Loading } from "./Loading";
 
 const Pokedex = (props) => {
-	const { pokemon, currentPage, setCurrentPage, totalPages, loading } = props;
+	const {
+		pokemon,
+		currentPage,
+		setCurrentPage,
+		totalPages,
+		loading,
+		setShowModal,
+		onClickPokemonCard
+	} = props;
 
 	const nextPage = () => {
 		if (currentPage !== totalPages) setCurrentPage(currentPage + 1);
@@ -24,11 +32,18 @@ const Pokedex = (props) => {
 				/>
 			</div>
 			{loading ? (
-				<LoadingGif />
+				<Loading />
 			) : (
 				<div className="pokedex-grid">
 					{pokemon.map((pokemon, idx) => {
-						return <Pokemon pokemon={pokemon} key={pokemon.name} />;
+						return (
+							<Pokemon
+								pokemon={pokemon}
+								key={pokemon.name}
+								setShowModal={setShowModal}
+								onClickPokemonCard={onClickPokemonCard}
+							/>
+						);
 					})}
 				</div>
 			)}

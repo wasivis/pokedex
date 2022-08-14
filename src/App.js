@@ -7,6 +7,7 @@ import { getPokemonData, getPokemon, searchPokemon } from "./api";
 import { FavoriteProvider } from "./contexts/favoritesContext";
 import Footer from "./components/Footer";
 import Filters from "./components/Filters";
+import PokemonDetailModal from "./components/PokemonDetailModal.js";
 
 const { useState, useEffect } = React;
 
@@ -15,8 +16,9 @@ const localStorageKey = "favorite_pokemon";
 export default function App() {
 	const [pokemon, setPokemon] = useState([]);
 	const [allPokemon, setAllPokemon] = useState([]);
+	const [pokemonModalItem, setPokemonModalItem] = useState(null);
 	const [currentPage, setCurrentPage] = useState(1);
-	const [totalPages, setTotalPages] = useState();
+	const [totalPages, setTotalPages] = useState(1);
 	const [pokemonPerPage] = useState(24);
 	const [loading, setLoading] = useState(true);
 	const [favorites, setFavorites] = useState([]);
@@ -56,6 +58,7 @@ export default function App() {
 	];
 	const [selectedRegion, setSelectedRegion] = useState(0);
 	const [selectedType, setSelectedType] = useState(0);
+	const [showModal, setShowModal] = useState(false);
 
 	const fetchPokemon = async () => {
 		try {
@@ -121,7 +124,7 @@ export default function App() {
 
 	const onSearch = async (pokemon) => {
 		if (!pokemon) {
-			return fetchPokemon();
+			return setPokemon(allPokemon);
 		}
 		setLoading(true);
 		setNotFound(false);
@@ -147,45 +150,6 @@ export default function App() {
 		setSelectedRegion(e.target.value);
 	};
 
-	/*const pageTotal = pageTotalByRegionAndType(allPokemon);
-
-	function pageTotalByRegionAndType() {
-		if (selectedType < 1) {
-			return Math.ceil(
-				(regions[selectedRegion].endId - regions[selectedRegion].startId) / 24
-			);
-		} else if (selectedType >= 1) {
-			switch (types[selectedType].name) {
-				case "Ice":
-					return 2;
-				case "Dark":
-				case "Dragon":
-				case "Electric":
-				case "Fairy":
-				case "Fighting":
-				case "Fire":
-				case "Ghost":
-				case "Ground":
-				case "Poison":
-				case "Rock":
-				case "Steel":
-					return 3;
-				case "Bug":
-				case "Psychic":
-					return 4;
-				case "Flying":
-				case "Grass":
-				case "Normal":
-					return 5;
-				case "Water":
-					return 6;
-				default:
-					break;
-			}
-		}
-	}
-*/
-
 	const filterPageTotal = filterPageTotalByRegion(pokemon);
 
 	function filterPageTotalByRegion() {
@@ -196,6 +160,11 @@ export default function App() {
 	const indexOfFirstRecord = indexOfLastRecord - pokemonPerPage;
 	const currentPokemon = pokemon.slice(indexOfFirstRecord, indexOfLastRecord);
 
+	const onClickPokemonCard = (pokemon) => {
+		setPokemonModalItem(pokemon);
+		setShowModal(true);
+	};
+
 	return (
 		<FavoriteProvider
 			value={{
@@ -203,6 +172,13 @@ export default function App() {
 				updateFavoritePokemon: updateFavoritePokemon
 			}}
 		>
+			<PokemonDetailModal
+				showModal={showModal}
+				closeModal={() => {
+					setShowModal(false);
+				}}
+				pokemon={pokemonModalItem}
+			/>
 			<div>
 				<Navbar />
 				<div className="App">
@@ -222,6 +198,8 @@ export default function App() {
 							currentPage={currentPage}
 							setCurrentPage={setCurrentPage}
 							totalPages={filterPageTotal}
+							setShowModal={setShowModal}
+							onClickPokemonCard={onClickPokemonCard}
 						/>
 					)}
 				</div>

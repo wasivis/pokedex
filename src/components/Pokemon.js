@@ -2,30 +2,27 @@ import React, { useContext } from "react";
 import FavoriteContext from "../contexts/favoritesContext";
 
 const Pokemon = (props) => {
-	const { pokemon } = props;
+	const { pokemon, onClickPokemonCard } = props;
 	const { favoritePokemon, updateFavoritePokemon } = useContext(
 		FavoriteContext
 	);
-
 	const redHeart = "❤️";
 	const whiteHeart = "🤍";
 	const heart = favoritePokemon.includes(pokemon.name) ? redHeart : whiteHeart;
 
 	const clickHeart = (e) => {
 		e.preventDefault();
+		e.stopPropagation();
 		updateFavoritePokemon(pokemon.name);
 	};
 
-	const pokemonType = pokemon.types.map((type, idx) => {
-		return (
-			<div key={idx} id="type-box" className={type.type.name}>
-				{type.type.name}
-			</div>
-		);
-	});
-
 	return (
-		<div className="pokemon-card">
+		<div
+			className="pokemon-card"
+			onClick={() => {
+				onClickPokemonCard(pokemon);
+			}}
+		>
 			<div className="pokemon-img-container">
 				<img
 					src={pokemon.sprites.front_default}
@@ -39,7 +36,18 @@ const Pokemon = (props) => {
 					<div className="pokemon-id">#{pokemon.id}</div>
 				</div>
 				<div className="card-bottom">
-					<div className="pokemon-type">{pokemonType}</div>
+					<div className="pokemon-type">
+						{pokemon.types.map((type, idx) => {
+							return (
+								<div key={idx} id="type-box" /*className={type.type.name}*/>
+									<img
+										src={`/${type.type.name}_icon.png`}
+										alt={type.type.name}
+									/>
+								</div>
+							);
+						})}
+					</div>
 					<button onClick={clickHeart} className="favorite-btn">
 						<div className="favorite-heart">{heart}</div>
 					</button>
