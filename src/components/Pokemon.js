@@ -39,7 +39,7 @@ const Pokemon = (props) => {
 					<div className="pokemon-type">
 						{pokemon.types.map((type, idx) => {
 							return (
-								<div key={idx} id="type-box" /*className={type.type.name}*/>
+								<div key={idx} id="type-box">
 									<img
 										src={`/${type.type.name}_icon.png`}
 										alt={type.type.name}

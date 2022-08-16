@@ -16,49 +16,66 @@ const PokemonDetailModal = (props) => {
 					e.stopPropagation();
 				}}
 			>
-				<div className="modal-close-button">
-					<FontAwesomeIcon
-						icon={faXmark}
-						className="closeIcon"
-						onClick={closeModal}
-					/>
+				<div className="modal-top">
+					<h1 className="modal-pokemon-id">#{pokemon?.id}</h1>
+					<h1>{pokemon?.name}</h1>
+					<div className="modal-close-button">
+						<FontAwesomeIcon
+							icon={faXmark}
+							className="closeIcon"
+							onClick={closeModal}
+						/>
+					</div>
 				</div>
-				<div className="modal-container">
-					<div className="modal-content-main">
-						<div className="modal-main-top">
-							<h1 className="pokemon-id-modal">#{pokemon?.id}</h1>
-							<h1 className="pokemon-name-modal">{pokemon?.name}</h1>
+				<div className="modal-img-container">
+					<div className="modal-img">
+						<img
+							src={pokemon?.sprites.other.dream_world.front_default}
+							alt="{pokemon?.name}"
+						/>
+					</div>
+				</div>
+				<div className="modal-bottom">
+					<div className="modal-left-column">
+						<h1>Base Stats</h1>
+						<div>
+							<span className="stat-name">{pokemon?.stats[0].stat.name}:</span>
+							<span> {pokemon?.stats[0].base_stat}</span>
 						</div>
-						<div className="pokemon-img-modal">
-							<img
-								src={pokemon?.sprites.other.dream_world.front_default}
-								alt={pokemon?.name}
-							/>
+						<div>
+							<span className="stat-name">{pokemon?.stats[1].stat.name}:</span>
+							<span> {pokemon?.stats[1].base_stat}</span>
+						</div>
+						<div>
+							<span className="stat-name">{pokemon?.stats[2].stat.name}:</span>
+							<span> {pokemon?.stats[2].base_stat}</span>
+						</div>
+						<div>
+							<span className="stat-name">{pokemon?.stats[3].stat.name}:</span>
+							<span> {pokemon?.stats[3].base_stat}</span>
+						</div>
+						<div>
+							<span className="stat-name">{pokemon?.stats[4].stat.name}:</span>
+							<span> {pokemon?.stats[4].base_stat}</span>
+						</div>
+						<div>
+							<span className="stat-name">{pokemon?.stats[5].stat.name}:</span>
+							<span> {pokemon?.stats[5].base_stat}</span>
+						</div>
+						<div>
+							<span className="stat-name">weight:</span>
+							<span> {pokemon?.weight / 10}kg</span>
+						</div>
+						<div>
+							<span className="stat-name">Height:</span>
+							<span> {pokemon?.height / 10}m</span>
 						</div>
 					</div>
-					<div className="modal-content-details">
-						<div className="base-stats">
-							<h1>Base Stats</h1>
-							<div>
-								{pokemon?.stats[0].stat.name}: {pokemon?.stats[0].base_stat}
-							</div>
-							<div>
-								{pokemon?.stats[1].stat.name}: {pokemon?.stats[1].base_stat}
-							</div>
-							<div>
-								{pokemon?.stats[2].stat.name}: {pokemon?.stats[2].base_stat}
-							</div>
-							<div>
-								{pokemon?.stats[3].stat.name}: {pokemon?.stats[3].base_stat}
-							</div>
-							<div>
-								{pokemon?.stats[4].stat.name}: {pokemon?.stats[4].base_stat}
-							</div>
-							<div>
-								{pokemon?.stats[5].stat.name}: {pokemon?.stats[5].base_stat}
-							</div>
-							<div>weight: {pokemon?.weight}</div>
-						</div>
+					<div className="modal-right-column">
+						<h1>Abilities</h1>
+						<div>{pokemon?.abilities[0]?.ability.name}</div>
+						<div>{pokemon?.abilities[1]?.ability.name}</div>
+						<div>{pokemon?.abilities[2]?.ability.name}</div>
 					</div>
 				</div>
 			</div>
