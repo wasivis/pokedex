@@ -51,11 +51,15 @@ const PokemonDetailModal = (props) => {
 							<span> {pokemon?.stats[2].base_stat}</span>
 						</div>
 						<div>
-							<span className="stat-name">{pokemon?.stats[3].stat.name}:</span>
+							<span className="stat-name">
+								{pokemon?.stats[3].stat.name.replace(/-/g, " ")}:
+							</span>
 							<span> {pokemon?.stats[3].base_stat}</span>
 						</div>
 						<div>
-							<span className="stat-name">{pokemon?.stats[4].stat.name}:</span>
+							<span className="stat-name">
+								{pokemon?.stats[4].stat.name.replace(/-/g, " ")}:
+							</span>
 							<span> {pokemon?.stats[4].base_stat}</span>
 						</div>
 						<div>
@@ -73,9 +77,9 @@ const PokemonDetailModal = (props) => {
 					</div>
 					<div className="modal-right-column">
 						<h1>Abilities</h1>
-						<div>{pokemon?.abilities[0]?.ability.name}</div>
-						<div>{pokemon?.abilities[1]?.ability.name}</div>
-						<div>{pokemon?.abilities[2]?.ability.name}</div>
+						<div>{pokemon?.abilities[0]?.ability.name.replace(/-/g, " ")}</div>
+						<div>{pokemon?.abilities[1]?.ability.name.replace(/-/g, " ")}</div>
+						<div>{pokemon?.abilities[2]?.ability.name.replace(/-/g, " ")}</div>
 					</div>
 				</div>
 			</div>
