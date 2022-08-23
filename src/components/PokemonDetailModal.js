@@ -1,9 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const PokemonDetailModal = (props) => {
 	const { closeModal, pokemon, showModal } = props;
+	const [pokemonDetails, setPokemonDetails] = useState();
+
+	useEffect(() => {
+		if (pokemon) {
+			const fetchPokemonDetails = async () => {
+				try {
+					const species = await fetch(pokemon.species.url).then((r) =>
+						r.json()
+					);
+					setPokemonDetails(species);
+				} catch (err) {}
+			};
+			fetchPokemonDetails();
+		}
+	}, [showModal, pokemon]);
+
+	const imageURL = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon?.id}.png`;
 
 	return (
 		<div
@@ -18,7 +35,9 @@ const PokemonDetailModal = (props) => {
 			>
 				<div className="modal-top">
 					<h1 className="modal-pokemon-id">#{pokemon?.id}</h1>
-					<h1>{pokemon?.name}</h1>
+					<h1>
+						{pokemon?.name} ({pokemonDetails?.names[0].name})
+					</h1>
 					<div className="modal-close-button">
 						<FontAwesomeIcon
 							icon={faXmark}
@@ -27,12 +46,19 @@ const PokemonDetailModal = (props) => {
 						/>
 					</div>
 				</div>
-				<div className="modal-img-container">
-					<div className="modal-img">
-						<img
-							src={pokemon?.sprites.other.dream_world.front_default}
-							alt="{pokemon?.name}"
-						/>
+				<div className="modal-center">
+					<div className={`modal-pokemon-genus ${pokemon?.types[0].type.name}`}>
+						{pokemonDetails?.genera[7].genus}
+					</div>
+					<div className="modal-img" key="idx">
+						<img src={imageURL} alt="{pokemon?.name}" />
+					</div>
+					<div className="modal-type-icons">
+						{pokemon?.types.map((type) => {
+							return (
+								<img src={`/${type.type.name}_icon.png`} alt={type.type.name} />
+							);
+						})}
 					</div>
 				</div>
 				<div className="modal-bottom">
@@ -76,10 +102,22 @@ const PokemonDetailModal = (props) => {
 						</div>
 					</div>
 					<div className="modal-right-column">
-						<h1>Abilities</h1>
-						<div>{pokemon?.abilities[0]?.ability.name.replace(/-/g, " ")}</div>
-						<div>{pokemon?.abilities[1]?.ability.name.replace(/-/g, " ")}</div>
-						<div>{pokemon?.abilities[2]?.ability.name.replace(/-/g, " ")}</div>
+						<div className="modal-abilities">
+							<h1>Abilities</h1>
+							<div>
+								{pokemon?.abilities[0]?.ability.name.replace(/-/g, " ")}
+							</div>
+							<div>
+								{pokemon?.abilities[1]?.ability.name.replace(/-/g, " ")}
+							</div>
+							<div>
+								{pokemon?.abilities[2]?.ability.name.replace(/-/g, " ")}
+							</div>
+						</div>
+						<div className="modal-flavor-text">
+							<h1>Info</h1>
+							<div>{pokemonDetails?.flavor_text_entries[0].flavor_text}</div>
+						</div>
 					</div>
 				</div>
 			</div>

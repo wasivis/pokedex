@@ -58,6 +58,7 @@ export default function App() {
 	];
 	const [selectedRegion, setSelectedRegion] = useState(0);
 	const [selectedType, setSelectedType] = useState(0);
+	const [selectedSorting, setSelectedSorting] = useState("id");
 	const [showModal, setShowModal] = useState(false);
 
 	const fetchPokemon = async () => {
@@ -97,8 +98,13 @@ export default function App() {
 					.map((type) => type.type.name)
 					.includes(types[selectedType].name.toLowerCase());
 			});
+		if (selectedSorting === "id") {
+			filteredPokemon.sort((a, b) => a.id - b.id);
+		} else if (selectedSorting === "name") {
+			filteredPokemon.sort((a, b) => (a.name < b.name ? -1 : 1));
+		}
 		setPokemon(filteredPokemon);
-	}, [selectedRegion, selectedType]);
+	}, [selectedRegion, selectedType, selectedSorting]);
 
 	const loadFavoritePokemon = () => {
 		const pokemon =
@@ -150,6 +156,10 @@ export default function App() {
 		setSelectedRegion(e.target.value);
 	};
 
+	const handleSortingSelection = (e) => {
+		setSelectedSorting(e.target.value);
+	};
+
 	const filterPageTotal = filterPageTotalByRegion(pokemon);
 
 	function filterPageTotalByRegion() {
@@ -186,6 +196,7 @@ export default function App() {
 					<Filters
 						setFilterType={handleTypeSelection}
 						setFilterRegion={handleRegionSelection}
+						setFilterSorting={handleSortingSelection}
 						types={types}
 						regions={regions}
 					/>

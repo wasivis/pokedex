@@ -27,13 +27,13 @@ const Pokemon = (props) => {
 				<img
 					src={pokemon.sprites.front_default}
 					alt={pokemon.name}
-					className="pokemon-img"
+					className="pokemon-card-img"
 				/>
 			</div>
 			<div className="card-body">
 				<div className="card-top">
-					<h3>{pokemon.name}</h3>
-					<div className="pokemon-id">#{pokemon.id}</div>
+					<h3 className="pokemon-card-name">{pokemon.name}</h3>
+					<div className="pokemon-card-id">#{pokemon.id}</div>
 				</div>
 				<div className="card-bottom">
 					<div className="pokemon-type">

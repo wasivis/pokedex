@@ -24,6 +24,15 @@ export const getPokemonData = async (url) => {
 	} catch (err) {}
 };
 
+export const getPokemonDetails = async () => {
+	try {
+		let url = `https://pokeapi.co/api/v2/pokemon-species?limit=898`;
+		const res = await fetch(url);
+		const data = await res.json();
+		return data;
+	} catch (err) {}
+};
+
 export const searchPokemonByType = async (type, limit, offset) => {
 	try {
 		let url = `https://pokeapi.co/api/v2/type/${type}`;

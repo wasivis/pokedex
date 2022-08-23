@@ -1,7 +1,13 @@
 import React from "react";
 
 const Filters = (props) => {
-	const { setFilterType, setFilterRegion, regions, types } = props;
+	const {
+		setFilterType,
+		setFilterRegion,
+		setFilterSorting,
+		regions,
+		types
+	} = props;
 
 	const setType = (e) => {
 		setFilterType(e);
@@ -9,6 +15,10 @@ const Filters = (props) => {
 
 	const setRegion = (e) => {
 		setFilterRegion(e);
+	};
+
+	const setSorting = (e) => {
+		setFilterSorting(e);
 	};
 
 	return (
@@ -37,6 +47,18 @@ const Filters = (props) => {
 					{regions.map((region, idx) => {
 						return <option value={idx}>{region.name}</option>;
 					})}
+				</select>
+			</div>
+			<div className="sorting-filter-container">
+				<p>Sort by</p>
+				<select
+					className="selectSorting-box"
+					aria-label="Sort Pokemon By"
+					name="sort-list"
+					onChange={setSorting}
+				>
+					<option value="id">ID</option>
+					<option value="name">Name</option>
 				</select>
 			</div>
 		</div>
