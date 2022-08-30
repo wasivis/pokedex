@@ -5,6 +5,7 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 const PokemonDetailModal = (props) => {
 	const { closeModal, pokemon, showModal } = props;
 	const [pokemonDetails, setPokemonDetails] = useState();
+	const [about, setAbout] = useState();
 
 	useEffect(() => {
 		if (pokemon) {
@@ -14,11 +15,33 @@ const PokemonDetailModal = (props) => {
 						r.json()
 					);
 					setPokemonDetails(species);
+					const englishEntry = species.flavor_text_entries.filter(
+						(entry) => entry.language.name === "en"
+					);
+					if (englishEntry.length > 0) {
+						setAbout(englishEntry[0].flavor_text);
+					} else {
+						return "There's no english description for this Pokémon!";
+					}
 				} catch (err) {}
 			};
 			fetchPokemonDetails();
 		}
 	}, [showModal, pokemon]);
+
+	useEffect(() => {
+		const keyDownHandler = (event) => {
+			if (event.key === "Escape") {
+				event.preventDefault();
+				closeModal();
+			}
+		};
+		document.addEventListener("keydown", keyDownHandler);
+
+		return () => {
+			document.removeEventListener("keydown", keyDownHandler);
+		};
+	}, [showModal]);
 
 	const imageURL = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon?.id}.png`;
 
@@ -31,6 +54,9 @@ const PokemonDetailModal = (props) => {
 				className={showModal ? "modal open" : "modal closed"}
 				onClick={(e) => {
 					e.stopPropagation();
+				}}
+				onKeyPress={(e) => {
+					e.closeEsc();
 				}}
 			>
 				<div className="modal-top">
@@ -46,77 +72,93 @@ const PokemonDetailModal = (props) => {
 						/>
 					</div>
 				</div>
-				<div className="modal-center">
-					<div className={`modal-pokemon-genus ${pokemon?.types[0].type.name}`}>
-						{pokemonDetails?.genera[7].genus}
-					</div>
-					<div className="modal-img" key="idx">
-						<img src={imageURL} alt="{pokemon?.name}" />
-					</div>
-					<div className="modal-type-icons">
-						{pokemon?.types.map((type) => {
-							return (
-								<img src={`/${type.type.name}_icon.png`} alt={type.type.name} />
-							);
-						})}
-					</div>
-				</div>
 				<div className="modal-bottom">
 					<div className="modal-left-column">
-						<h1>Base Stats</h1>
-						<div>
-							<span className="stat-name">{pokemon?.stats[0].stat.name}:</span>
-							<span> {pokemon?.stats[0].base_stat}</span>
+						<div
+							className={`modal-pokemon-genus ${pokemon?.types[0].type.name}`}
+						>
+							{pokemonDetails?.genera[7].genus}
 						</div>
-						<div>
-							<span className="stat-name">{pokemon?.stats[1].stat.name}:</span>
-							<span> {pokemon?.stats[1].base_stat}</span>
+						<div className="modal-img" key="idx">
+							<img src={imageURL} alt="{pokemon?.name}" />
 						</div>
-						<div>
-							<span className="stat-name">{pokemon?.stats[2].stat.name}:</span>
-							<span> {pokemon?.stats[2].base_stat}</span>
+						<div className="modal-type-icons">
+							{pokemon?.types.map((type) => {
+								return (
+									<img
+										src={`/${type.type.name}_icon.png`}
+										alt={type.type.name}
+										title={type.type.name}
+									/>
+								);
+							})}
 						</div>
-						<div>
-							<span className="stat-name">
-								{pokemon?.stats[3].stat.name.replace(/-/g, " ")}:
-							</span>
-							<span> {pokemon?.stats[3].base_stat}</span>
-						</div>
-						<div>
-							<span className="stat-name">
-								{pokemon?.stats[4].stat.name.replace(/-/g, " ")}:
-							</span>
-							<span> {pokemon?.stats[4].base_stat}</span>
-						</div>
-						<div>
-							<span className="stat-name">{pokemon?.stats[5].stat.name}:</span>
-							<span> {pokemon?.stats[5].base_stat}</span>
-						</div>
-						<div>
-							<span className="stat-name">weight:</span>
-							<span> {pokemon?.weight / 10}kg</span>
-						</div>
-						<div>
-							<span className="stat-name">Height:</span>
-							<span> {pokemon?.height / 10}m</span>
+						<div className="weight-and-height">
+							<div className="pokemon-weight">
+								<span>Weight: </span>
+								<span>{pokemon?.weight / 10}kg</span>
+							</div>
+							<div className="pokemon-height">
+								<span>Height: </span>
+								<span>{pokemon?.height / 10}m</span>
+							</div>
 						</div>
 					</div>
 					<div className="modal-right-column">
-						<div className="modal-abilities">
-							<h1>Abilities</h1>
-							<div>
-								{pokemon?.abilities[0]?.ability.name.replace(/-/g, " ")}
-							</div>
-							<div>
-								{pokemon?.abilities[1]?.ability.name.replace(/-/g, " ")}
-							</div>
-							<div>
-								{pokemon?.abilities[2]?.ability.name.replace(/-/g, " ")}
+						<div>
+							<h1>Base Stats</h1>
+							<div className="modal-stats container">
+								<div>
+									<span id="stat-name">{pokemon?.stats[0].stat.name}:</span>
+									<span> {pokemon?.stats[0].base_stat}</span>
+								</div>
+								<div>
+									<span id="stat-name">{pokemon?.stats[1].stat.name}:</span>
+									<span> {pokemon?.stats[1].base_stat}</span>
+								</div>
+
+								<div>
+									<span id="stat-name">{pokemon?.stats[2].stat.name}:</span>
+									<span> {pokemon?.stats[2].base_stat}</span>
+								</div>
+								<div>
+									<span id="stat-name">
+										{pokemon?.stats[3].stat.name.replace(/-/g, " ")}:
+									</span>
+									<span> {pokemon?.stats[3].base_stat}</span>
+								</div>
+
+								<div>
+									<span id="stat-name">
+										{pokemon?.stats[4].stat.name.replace(/-/g, " ")}:
+									</span>
+									<span> {pokemon?.stats[4].base_stat}</span>
+								</div>
+								<div>
+									<span id="stat-name">{pokemon?.stats[5].stat.name}:</span>
+									<span> {pokemon?.stats[5].base_stat}</span>
+								</div>
 							</div>
 						</div>
-						<div className="modal-flavor-text">
-							<h1>Info</h1>
-							<div>{pokemonDetails?.flavor_text_entries[0].flavor_text}</div>
+						<div>
+							<h1>Abilities</h1>
+							<div className="modal-abilities container">
+								{pokemon?.abilities.map((ability) => {
+									return (
+										<ul>
+											<li key={ability}>
+												{ability.ability.name.replace(/-/g, " ")}
+											</li>
+										</ul>
+									);
+								})}
+							</div>
+						</div>
+						<div>
+							<h1>About</h1>
+							<div className="modal-flavor-text container">
+								<div>{about}</div>
+							</div>
 						</div>
 					</div>
 				</div>
