@@ -1,6 +1,7 @@
 import React from "react";
 import FavoriteContext from "../contexts/favoritesContext";
 import { Logo } from "./LogoPng";
+import heart_full from "../images/heart-full.png";
 
 const { useContext } = React;
 
@@ -27,9 +28,13 @@ const Navbar = () => {
 			<div className="favorites">
 				<p>Favorites</p>
 				<div className="heart-tooltip">
-					<span role="img" aria-label="xxxx">
-						&#10084;&#65039;
-					</span>
+					<img
+						src={heart_full}
+						width={24}
+						height={22}
+						alt="heart-icon"
+						className="favorite-heart-navbar"
+					/>
 					<span className="tooltip-text">{tooltiptext}</span>
 				</div>
 				<div className="favorite-number">{favoritePokemon.length}</div>

@@ -11,7 +11,8 @@ const Pokedex = (props) => {
 		totalPages,
 		loading,
 		setShowModal,
-		onClickPokemonCard
+		onClickPokemonCard,
+		isShiny
 	} = props;
 
 	const nextPage = () => {
@@ -35,13 +36,14 @@ const Pokedex = (props) => {
 				<Loading />
 			) : (
 				<div className="pokedex-grid">
-					{pokemon.map((pokemon, idx) => {
+					{pokemon.map((pokemon, index) => {
 						return (
 							<Pokemon
 								pokemon={pokemon}
 								key={pokemon.name}
 								setShowModal={setShowModal}
 								onClickPokemonCard={onClickPokemonCard}
+								isShiny={isShiny}
 							/>
 						);
 					})}

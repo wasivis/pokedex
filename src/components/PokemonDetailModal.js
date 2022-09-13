@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from "react";
+import { getPokemonData } from "../api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const PokemonDetailModal = (props) => {
-	const { closeModal, pokemon, showModal } = props;
+	const {
+		closeModal,
+		pokemon,
+		setPokemonModalItem,
+		showModal,
+		onNextClick,
+		onPrevClick
+	} = props;
 	const [pokemonDetails, setPokemonDetails] = useState();
 	const [about, setAbout] = useState();
+	const [selectedVariety, setSelectedVariety] = useState();
 
 	useEffect(() => {
 		if (pokemon) {
@@ -30,6 +39,20 @@ const PokemonDetailModal = (props) => {
 	}, [showModal, pokemon]);
 
 	useEffect(() => {
+		if (pokemon) {
+			const fetchPokemonVariety = async () => {
+				try {
+					const pokeVariety = await fetch(selectedVariety).then((r) =>
+						r.json()
+					);
+					setPokemonModalItem(pokeVariety);
+				} catch (err) {}
+			};
+			fetchPokemonVariety();
+		}
+	}, [selectedVariety]);
+
+	useEffect(() => {
 		const keyDownHandler = (event) => {
 			if (event.key === "Escape") {
 				event.preventDefault();
@@ -42,6 +65,16 @@ const PokemonDetailModal = (props) => {
 			document.removeEventListener("keydown", keyDownHandler);
 		};
 	}, [showModal]);
+
+	function capitalize(name) {
+		const newArray = name.split(" ");
+
+		newArray
+			.map((word) => {
+				return word[0].toUpperCase() + word.substring(1);
+			})
+			.join(" ");
+	}
 
 	const imageURL = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon?.id}.png`;
 
@@ -61,9 +94,9 @@ const PokemonDetailModal = (props) => {
 			>
 				<div className="modal-top">
 					<h1 className="modal-pokemon-id">#{pokemon?.id}</h1>
-					<h1>
-						{pokemon?.name} ({pokemonDetails?.names[0].name})
-					</h1>
+					<button onClick={onPrevClick}>Previous</button>
+					<h1>{pokemon?.name.replace(/-/g, " ")}</h1>
+					<button onClick={onNextClick}>Next</button>
 					<div className="modal-close-button">
 						<FontAwesomeIcon
 							icon={faXmark}
@@ -78,6 +111,34 @@ const PokemonDetailModal = (props) => {
 							className={`modal-pokemon-genus ${pokemon?.types[0].type.name}`}
 						>
 							{pokemonDetails?.genera[7].genus}
+						</div>
+						<div className="modal-varieties">
+							<select
+								className="selectVariety-box"
+								id="selectVarietyId"
+								aria-label="Choose Pokemon Variety"
+								name="variety-list"
+								onChange={(e) => setSelectedVariety(e.target.value)}
+							>
+								{pokemonDetails?.varieties
+									.filter(
+										(variety) =>
+											variety.pokemon.name.includes("-mega") ||
+											variety.pokemon.name.includes("-gmax") ||
+											variety.is_default === true
+									)
+									.map((variety, idx) => {
+										return (
+											<option value={variety.pokemon.url}>
+												{variety.pokemon.name
+													.replace(/-/g, " ")
+													.replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
+														letter.toUpperCase()
+													)}
+											</option>
+										);
+									})}
+							</select>
 						</div>
 						<div className="modal-img" key="idx">
 							<img src={imageURL} alt="{pokemon?.name}" />
@@ -156,7 +217,7 @@ const PokemonDetailModal = (props) => {
 						</div>
 						<div>
 							<h1>About</h1>
-							<div className="modal-flavor-text container">
+							<div className="modal-about container">
 								<div>{about}</div>
 							</div>
 						</div>

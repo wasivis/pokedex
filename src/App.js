@@ -59,6 +59,7 @@ export default function App() {
 	const [selectedRegion, setSelectedRegion] = useState(0);
 	const [selectedType, setSelectedType] = useState(0);
 	const [selectedSorting, setSelectedSorting] = useState("id");
+	const [isShiny, setIsShiny] = useState(false);
 	const [showModal, setShowModal] = useState(false);
 
 	const fetchPokemon = async () => {
@@ -175,6 +176,19 @@ export default function App() {
 		setShowModal(true);
 	};
 
+	const nextPoke = pokemon.indexOf(pokemonModalItem) + 1;
+	const prevPoke = pokemon.indexOf(pokemonModalItem) - 1;
+
+	const onNextClick = () => {
+		if (pokemon.indexOf(pokemonModalItem) < pokemon?.length - 1)
+			setPokemonModalItem(pokemon[nextPoke]);
+	};
+
+	const onPrevClick = () => {
+		if (pokemon.indexOf(pokemonModalItem) > 0)
+			setPokemonModalItem(pokemon[prevPoke]);
+	};
+
 	return (
 		<FavoriteProvider
 			value={{
@@ -188,6 +202,9 @@ export default function App() {
 					setShowModal(false);
 				}}
 				pokemon={pokemonModalItem}
+				onPrevClick={onPrevClick}
+				onNextClick={onNextClick}
+				setPokemonModalItem={setPokemonModalItem}
 			/>
 			<div>
 				<Navbar />
@@ -199,6 +216,7 @@ export default function App() {
 						setFilterSorting={handleSortingSelection}
 						types={types}
 						regions={regions}
+						setIsShiny={setIsShiny}
 					/>
 					{notFound ? (
 						<div className="not-found-text">That Pokemon doesn't exist!</div>
@@ -211,6 +229,7 @@ export default function App() {
 							totalPages={filterPageTotal}
 							setShowModal={setShowModal}
 							onClickPokemonCard={onClickPokemonCard}
+							isShiny={isShiny}
 						/>
 					)}
 				</div>

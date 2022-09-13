@@ -5,6 +5,7 @@ const Filters = (props) => {
 		setFilterType,
 		setFilterRegion,
 		setFilterSorting,
+		setIsShiny,
 		regions,
 		types
 	} = props;
@@ -59,6 +60,18 @@ const Filters = (props) => {
 				>
 					<option value="id">ID</option>
 					<option value="name">Name</option>
+				</select>
+			</div>
+			<div className="sorting-filter-container">
+				<p>Shiny</p>
+				<select
+					className="selectShiny-box"
+					aria-label="Shiny Selection"
+					name="shiny-selection"
+					onChange={(e) => setIsShiny(e.target.value)}
+				>
+					<option value="no">No</option>
+					<option value="yes">Yes</option>
 				</select>
 			</div>
 		</div>

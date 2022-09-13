@@ -1,13 +1,16 @@
 import React, { useContext } from "react";
 import FavoriteContext from "../contexts/favoritesContext";
+import heart_full from "../images/heart-full.png";
+import heart_empty from "../images/heart-empty.png";
 
 const Pokemon = (props) => {
-	const { pokemon, onClickPokemonCard } = props;
+	const { pokemon, onClickPokemonCard, isShiny } = props;
 	const { favoritePokemon, updateFavoritePokemon } = useContext(
 		FavoriteContext
 	);
-	const redHeart = "❤️";
-	const whiteHeart = "🤍";
+
+	const redHeart = heart_full;
+	const whiteHeart = heart_empty;
 	const heart = favoritePokemon.includes(pokemon.name) ? redHeart : whiteHeart;
 
 	const clickHeart = (e) => {
@@ -25,7 +28,11 @@ const Pokemon = (props) => {
 		>
 			<div className="pokemon-img-container">
 				<img
-					src={pokemon.sprites.front_default}
+					src={
+						isShiny === "yes"
+							? pokemon.sprites.front_shiny
+							: pokemon.sprites.front_default
+					}
 					alt={pokemon.name}
 					className="pokemon-card-img"
 				/>
@@ -49,7 +56,9 @@ const Pokemon = (props) => {
 						})}
 					</div>
 					<button onClick={clickHeart} className="favorite-btn">
-						<div className="favorite-heart">{heart}</div>
+						<div className="favorite-heart">
+							<img src={heart} alt="heart" width={24} height={22} />
+						</div>
 					</button>
 				</div>
 			</div>
