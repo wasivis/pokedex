@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { getPokemonData } from "../api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
@@ -66,16 +65,6 @@ const PokemonDetailModal = (props) => {
 		};
 	}, [showModal]);
 
-	function capitalize(name) {
-		const newArray = name.split(" ");
-
-		newArray
-			.map((word) => {
-				return word[0].toUpperCase() + word.substring(1);
-			})
-			.join(" ");
-	}
-
 	const imageURL = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon?.id}.png`;
 
 	return (
@@ -113,35 +102,30 @@ const PokemonDetailModal = (props) => {
 							{pokemonDetails?.genera[7].genus}
 						</div>
 						<div className="modal-varieties">
+							<p>Varieties:</p>
 							<select
 								className="selectVariety-box"
 								id="selectVarietyId"
+								f
 								aria-label="Choose Pokemon Variety"
 								name="variety-list"
 								onChange={(e) => setSelectedVariety(e.target.value)}
 							>
-								{pokemonDetails?.varieties
-									.filter(
-										(variety) =>
-											variety.pokemon.name.includes("-mega") ||
-											variety.pokemon.name.includes("-gmax") ||
-											variety.is_default === true
-									)
-									.map((variety, idx) => {
-										return (
-											<option value={variety.pokemon.url}>
-												{variety.pokemon.name
-													.replace(/-/g, " ")
-													.replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
-														letter.toUpperCase()
-													)}
-											</option>
-										);
-									})}
+								{pokemonDetails?.varieties.map((variety, idx) => {
+									return (
+										<option value={variety.pokemon.url}>
+											{variety.pokemon.name
+												.replace(/-/g, " ")
+												.replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
+													letter.toUpperCase()
+												)}
+										</option>
+									);
+								})}
 							</select>
 						</div>
 						<div className="modal-img" key="idx">
-							<img src={imageURL} alt="{pokemon?.name}" />
+							<img src={imageURL} alt={pokemon?.name} />
 						</div>
 						<div className="modal-type-icons">
 							{pokemon?.types.map((type) => {

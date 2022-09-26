@@ -39,7 +39,9 @@ const Pokemon = (props) => {
 			</div>
 			<div className="card-body">
 				<div className="card-top">
-					<h3 className="pokemon-card-name">{pokemon.name}</h3>
+					<h3 className="pokemon-card-name">
+						{pokemon.name.replace(/-/g, " ")}
+					</h3>
 					<div className="pokemon-card-id">#{pokemon.id}</div>
 				</div>
 				<div className="card-bottom">
@@ -57,7 +59,7 @@ const Pokemon = (props) => {
 					</div>
 					<button onClick={clickHeart} className="favorite-btn">
 						<div className="favorite-heart">
-							<img src={heart} alt="heart" width={24} height={22} />
+							<img src={heart} alt="heart" width={30} height={28} />
 						</div>
 					</button>
 				</div>

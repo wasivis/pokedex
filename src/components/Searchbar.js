@@ -25,7 +25,7 @@ const Searchbar = (props) => {
 		<div className="searchbar-container">
 			<div className="searchbar">
 				<input
-					placeholder="Search pokemon..."
+					placeholder="Search Pokémon..."
 					onChange={onChange}
 					onKeyPress={handleKeypress}
 				/>

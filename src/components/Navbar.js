@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import FavoriteContext from "../contexts/favoritesContext";
 import { Logo } from "./LogoPng";
 import heart_full from "../images/heart-full.png";
 
 const { useContext } = React;
-
 const defaultMessage = "You don't have any favorite Pokemon yet!";
 
 function capitalizeName(name) {
@@ -13,6 +12,12 @@ function capitalizeName(name) {
 
 const Navbar = () => {
 	const { favoritePokemon } = useContext(FavoriteContext);
+	const [theme, setTheme] = useState();
+
+	const handleThemeChange = () => {
+		const isCurrentDark = theme === "dark";
+		setTheme(isCurrentDark ? "light" : "dark");
+	};
 
 	const tooltiptext =
 		favoritePokemon.length === 0

@@ -8,6 +8,7 @@ import { FavoriteProvider } from "./contexts/favoritesContext";
 import Footer from "./components/Footer";
 import Filters from "./components/Filters";
 import PokemonDetailModal from "./components/PokemonDetailModal.js";
+import DarkMode from "./components/DarkMode";
 
 const { useState, useEffect } = React;
 
@@ -61,6 +62,7 @@ export default function App() {
 	const [selectedSorting, setSelectedSorting] = useState("id");
 	const [isShiny, setIsShiny] = useState(false);
 	const [showModal, setShowModal] = useState(false);
+	const [pokemonModalIndex, setPokemonModalIndex] = useState(null);
 
 	const fetchPokemon = async () => {
 		try {
@@ -171,70 +173,78 @@ export default function App() {
 	const indexOfFirstRecord = indexOfLastRecord - pokemonPerPage;
 	const currentPokemon = pokemon.slice(indexOfFirstRecord, indexOfLastRecord);
 
-	const onClickPokemonCard = (pokemon) => {
-		setPokemonModalItem(pokemon);
+	const onClickPokemonCard = (poke) => {
+		setPokemonModalItem(poke);
 		setShowModal(true);
+		setPokemonModalIndex(pokemon.indexOf(poke));
 	};
 
-	const nextPoke = pokemon.indexOf(pokemonModalItem) + 1;
-	const prevPoke = pokemon.indexOf(pokemonModalItem) - 1;
+	const nextPoke = pokemonModalIndex + 1;
+	const prevPoke = pokemonModalIndex - 1;
 
 	const onNextClick = () => {
-		if (pokemon.indexOf(pokemonModalItem) < pokemon?.length - 1)
-			setPokemonModalItem(pokemon[nextPoke]);
+		if (pokemonModalIndex < pokemon.length - 1) {
+			setPokemonModalItem(pokemon.find((e) => e === pokemon[nextPoke]));
+			setPokemonModalIndex(nextPoke);
+		}
 	};
 
 	const onPrevClick = () => {
-		if (pokemon.indexOf(pokemonModalItem) > 0)
-			setPokemonModalItem(pokemon[prevPoke]);
+		if (pokemonModalIndex > 0) {
+			setPokemonModalItem(pokemon.find((e) => e === pokemon[prevPoke]));
+			setPokemonModalIndex(prevPoke);
+		}
 	};
 
 	return (
-		<FavoriteProvider
-			value={{
-				favoritePokemon: favorites,
-				updateFavoritePokemon: updateFavoritePokemon
-			}}
-		>
-			<PokemonDetailModal
-				showModal={showModal}
-				closeModal={() => {
-					setShowModal(false);
+		<div className="App">
+			<FavoriteProvider
+				value={{
+					favoritePokemon: favorites,
+					updateFavoritePokemon: updateFavoritePokemon
 				}}
-				pokemon={pokemonModalItem}
-				onPrevClick={onPrevClick}
-				onNextClick={onNextClick}
-				setPokemonModalItem={setPokemonModalItem}
-			/>
-			<div>
-				<Navbar />
-				<div className="App">
-					<Searchbar onSearch={onSearch} />
-					<Filters
-						setFilterType={handleTypeSelection}
-						setFilterRegion={handleRegionSelection}
-						setFilterSorting={handleSortingSelection}
-						types={types}
-						regions={regions}
-						setIsShiny={setIsShiny}
-					/>
-					{notFound ? (
-						<div className="not-found-text">That Pokemon doesn't exist!</div>
-					) : (
-						<Pokedex
-							loading={loading}
-							pokemon={currentPokemon}
-							currentPage={currentPage}
-							setCurrentPage={setCurrentPage}
-							totalPages={filterPageTotal}
-							setShowModal={setShowModal}
-							onClickPokemonCard={onClickPokemonCard}
-							isShiny={isShiny}
+			>
+				<PokemonDetailModal
+					showModal={showModal}
+					closeModal={() => {
+						setShowModal(false);
+					}}
+					pokemon={pokemonModalItem}
+					onPrevClick={onPrevClick}
+					onNextClick={onNextClick}
+					setPokemonModalItem={setPokemonModalItem}
+				/>
+				<div>
+					<DarkMode />
+					<Navbar />
+					<div className="App">
+						<Searchbar onSearch={onSearch} />
+						<Filters
+							setFilterType={handleTypeSelection}
+							setFilterRegion={handleRegionSelection}
+							setFilterSorting={handleSortingSelection}
+							types={types}
+							regions={regions}
+							setIsShiny={setIsShiny}
 						/>
-					)}
+						{notFound ? (
+							<div className="not-found-text">That Pokemon doesn't exist!</div>
+						) : (
+							<Pokedex
+								loading={loading}
+								pokemon={currentPokemon}
+								currentPage={currentPage}
+								setCurrentPage={setCurrentPage}
+								totalPages={filterPageTotal}
+								setShowModal={setShowModal}
+								onClickPokemonCard={onClickPokemonCard}
+								isShiny={isShiny}
+							/>
+						)}
+					</div>
+					<Footer />
 				</div>
-				<Footer />
-			</div>
-		</FavoriteProvider>
+			</FavoriteProvider>
+		</div>
 	);
 }

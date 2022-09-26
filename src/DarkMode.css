@@ -1,0 +1,75 @@
+:root {
+	--font-color: #1d1d1d;
+	--background-color: #d1d1d1;
+	--card-color: #ffffff;
+	--heart-color-hover: lightgrey;
+}
+
+[data-theme="dark"] {
+	--font-color: #ececec;
+	--background-color: #5e5e5e;
+	--card-color: #2c2a2a;
+	--heart-color: invert(1) hue-rotate(180deg) saturate(8);
+	--heart-color-hover: #616161;
+}
+
+.toggle-theme-wrapper {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 4px;
+	margin: 10px 0 0 10px;
+}
+
+.toggle-theme-wrapper span {
+	font-size: 20px;
+}
+
+.toggle-theme {
+	position: relative;
+	display: inline-block;
+	height: 26px;
+	width: 52px;
+}
+
+.toggle-theme input {
+	display: none;
+}
+
+.slider {
+	background-color: #929292;
+	position: absolute;
+	cursor: pointer;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	top: 0;
+	transition: 0.2s;
+}
+
+.slider:before {
+	background-color: #fff;
+	bottom: 2px;
+	left: 2px;
+	content: "";
+	height: 22px;
+	position: absolute;
+	transition: 0.4s;
+	width: 22px;
+}
+
+input:checked + .slider:before {
+	transform: translateX(26px);
+}
+
+input:checked + .slider {
+	background-color: #2c2a2a;
+}
+
+.slider.round {
+	border-radius: 34px;
+}
+
+.slider.round:before {
+	border-radius: 50%;
+}
