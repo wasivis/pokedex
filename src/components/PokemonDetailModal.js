@@ -49,7 +49,8 @@ const PokemonDetailModal = (props) => {
 			};
 			fetchPokemonVariety();
 		}
-	}, [selectedVariety, setPokemonModalItem, pokemon]);
+		//eslint-disable-next-line
+	}, [selectedVariety]);
 
 	useEffect(() => {
 		const keyDownHandler = (event) => {
@@ -63,7 +64,8 @@ const PokemonDetailModal = (props) => {
 		return () => {
 			document.removeEventListener("keydown", keyDownHandler);
 		};
-	}, [showModal, closeModal]);
+		//eslint-disable-next-line
+	}, [showModal]);
 
 	const imageURL = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon?.id}.png`;
 
