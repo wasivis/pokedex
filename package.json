@@ -5,6 +5,7 @@
   "keywords": [],
   "main": "src/index.js",
   "homepage": "https://wasivis.github.io/pokedex/",
+  "private": false,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "6.1.2",
     "@fortawesome/free-brands-svg-icons": "6.1.1",
