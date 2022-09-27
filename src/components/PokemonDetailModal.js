@@ -49,7 +49,7 @@ const PokemonDetailModal = (props) => {
 			};
 			fetchPokemonVariety();
 		}
-	}, [selectedVariety]);
+	}, [selectedVariety, setPokemonModalItem, pokemon]);
 
 	useEffect(() => {
 		const keyDownHandler = (event) => {
@@ -63,7 +63,7 @@ const PokemonDetailModal = (props) => {
 		return () => {
 			document.removeEventListener("keydown", keyDownHandler);
 		};
-	}, [showModal]);
+	}, [showModal, closeModal]);
 
 	const imageURL = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon?.id}.png`;
 
@@ -125,6 +125,7 @@ const PokemonDetailModal = (props) => {
 							</select>
 						</div>
 						<div className="modal-img" key="idx">
+							{/*eslint-disable-next-line*/}
 							<img src={imageURL} alt={pokemon?.name} />
 						</div>
 						<div className="modal-type-icons">

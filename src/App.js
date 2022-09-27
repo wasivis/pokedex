@@ -19,12 +19,10 @@ export default function App() {
 	const [allPokemon, setAllPokemon] = useState([]);
 	const [pokemonModalItem, setPokemonModalItem] = useState(null);
 	const [currentPage, setCurrentPage] = useState(1);
-	const [totalPages, setTotalPages] = useState(1);
 	const [pokemonPerPage] = useState(24);
 	const [loading, setLoading] = useState(true);
 	const [favorites, setFavorites] = useState([]);
 	const [notFound, setNotFound] = useState(false);
-	const [searching, setSearching] = useState(false);
 	const regions = [
 		{ name: "All", startId: 1, endId: 898 },
 		{ name: "Kanto (Gen. 1)", startId: 1, endId: 151 },
@@ -107,6 +105,7 @@ export default function App() {
 			filteredPokemon.sort((a, b) => (a.name < b.name ? -1 : 1));
 		}
 		setPokemon(filteredPokemon);
+		//eslint-disable-next-line
 	}, [selectedRegion, selectedType, selectedSorting]);
 
 	const loadFavoritePokemon = () => {
@@ -137,7 +136,6 @@ export default function App() {
 		}
 		setLoading(true);
 		setNotFound(false);
-		setSearching(true);
 		const result = await searchPokemon(pokemon);
 		if (!result) {
 			setNotFound(true);
@@ -145,10 +143,8 @@ export default function App() {
 		} else {
 			setPokemon([result]);
 			setCurrentPage(1);
-			setTotalPages(1);
 		}
 		setLoading(false);
-		setSearching(false);
 	};
 
 	const handleTypeSelection = (e) => {
