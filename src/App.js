@@ -116,6 +116,7 @@ export default function App() {
 					poke.name.toLowerCase().includes(search.toLowerCase())
 			  );
 		setPokemon(filteredSearch);
+		setCurrentPage(1);
 		//eslint-disable-next-line
 	}, [search]);
 
