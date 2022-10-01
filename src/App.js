@@ -109,11 +109,6 @@ export default function App() {
 		//eslint-disable-next-line
 	}, [selectedRegion, selectedType, selectedSorting]);
 
-	const noResults = allPokemon.filter(
-		(poke) =>
-			poke.name.toLowerCase().includes(search.toLowerCase()).length === 0
-	);
-
 	useEffect(() => {
 		const filteredSearch = !search
 			? allPokemon
@@ -222,7 +217,7 @@ export default function App() {
 							regions={regions}
 							setIsShiny={setIsShiny}
 						/>
-						{pokemon.length === 0 ? (
+						{pokemon.length === 0 && !loading ? (
 							<div className="not-found-text">That Pokemon doesn't exist!</div>
 						) : (
 							<Pokedex
