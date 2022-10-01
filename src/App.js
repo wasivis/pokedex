@@ -17,6 +17,7 @@ const localStorageKey = "favorite_pokemon";
 export default function App() {
 	const [pokemon, setPokemon] = useState([]);
 	const [allPokemon, setAllPokemon] = useState([]);
+	const [search, setSearch] = useState("");
 	const [pokemonModalItem, setPokemonModalItem] = useState(null);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [pokemonPerPage] = useState(24);
@@ -108,6 +109,21 @@ export default function App() {
 		//eslint-disable-next-line
 	}, [selectedRegion, selectedType, selectedSorting]);
 
+	const noResults = allPokemon.filter(
+		(poke) =>
+			poke.name.toLowerCase().includes(search.toLowerCase()).length === 0
+	);
+
+	useEffect(() => {
+		const filteredSearch = !search
+			? allPokemon
+			: allPokemon.filter((poke) =>
+					poke.name.toLowerCase().includes(search.toLowerCase())
+			  );
+		setPokemon(filteredSearch);
+		//eslint-disable-next-line
+	}, [search]);
+
 	const loadFavoritePokemon = () => {
 		const pokemon =
 			JSON.parse(window.localStorage.getItem(localStorageKey)) || [];
@@ -128,23 +144,6 @@ export default function App() {
 		}
 		setFavorites(updated);
 		window.localStorage.setItem(localStorageKey, JSON.stringify(updated));
-	};
-
-	const onSearch = async (pokemon) => {
-		if (!pokemon) {
-			return setPokemon(allPokemon);
-		}
-		setLoading(true);
-		setNotFound(false);
-		const result = await searchPokemon(pokemon);
-		if (!result) {
-			setNotFound(true);
-			setLoading(false);
-		} else {
-			setPokemon([result]);
-			setCurrentPage(1);
-		}
-		setLoading(false);
 	};
 
 	const handleTypeSelection = (e) => {
@@ -211,10 +210,10 @@ export default function App() {
 					setPokemonModalItem={setPokemonModalItem}
 				/>
 				<div>
-					<DarkMode />
-					<Navbar />
 					<div className="App">
-						<Searchbar onSearch={onSearch} />
+						<DarkMode />
+						<Navbar />
+						<Searchbar setSearch={setSearch} />
 						<Filters
 							setFilterType={handleTypeSelection}
 							setFilterRegion={handleRegionSelection}
@@ -223,7 +222,7 @@ export default function App() {
 							regions={regions}
 							setIsShiny={setIsShiny}
 						/>
-						{notFound ? (
+						{pokemon.length === 0 ? (
 							<div className="not-found-text">That Pokemon doesn't exist!</div>
 						) : (
 							<Pokedex

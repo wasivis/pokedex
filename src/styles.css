@@ -54,18 +54,10 @@ nav {
 	font-size: 24px;
 }
 
-.searchbar-container {
+.searchbar {
 	display: flex;
 	align-items: center;
-	margin: 0 0 0 10px;
-	padding: 0;
-	flex: 1;
-}
-
-.searchbar {
-	margin-right: 17px;
-	flex: 1;
-	border-radius: 12px;
+	margin: 0 10px 0 10px;
 }
 
 .searchbar input {
@@ -73,28 +65,12 @@ nav {
 	border-radius: 12px;
 	border: none;
 	width: 100%;
-	padding: 10px;
+	padding: 8px;
 	font-size: 18px;
 }
 
 .searchbar input:focus {
 	outline: none;
-}
-
-.searchbar-btn button {
-	background-color: #363636;
-	border: none;
-	border-radius: 12px;
-	color: white;
-	margin-left: 10px;
-	margin-right: 10px;
-	cursor: pointer;
-	padding: 10px;
-	font-size: 18px;
-}
-
-.searchbar-btn button:hover {
-	background-color: gray;
 }
 
 .header {
@@ -222,7 +198,7 @@ nav {
 }
 
 .App {
-	font-family: sans-serif;
+	min-height: calc(100vh - 100px);
 }
 
 .not-found-text {
@@ -848,19 +824,9 @@ nav {
 		margin: 3px 2px 0 0;
 	}
 
-	.searchbar-container {
-		margin-top: 5px;
-	}
-
 	.searchbar input {
-		padding: 4px 4px 4px 8px;
+		padding: 6px;
 		font-size: 16px;
-	}
-
-	.searchbar-btn button {
-		padding: 4px 6px 4px 6px;
-		font-size: 16px;
-		margin-left: 0px;
 	}
 
 	.header {
@@ -901,6 +867,11 @@ nav {
 
 	.page-counter {
 		font-size: 16px;
+	}
+
+	.not-found-text {
+		font-size: 18px;
+		padding: 50px;
 	}
 
 	.pokedex-grid {
@@ -1098,18 +1069,9 @@ nav {
 		font-size: 20px;
 	}
 
-	.searchbar-container {
-		margin-top: 0;
-	}
-
-	.searchbar {
-		padding-right: 0px;
-		margin-right: 14px;
-	}
-
 	.searchbar input {
 		padding: 4px;
-		font-size: 16px;
+		font-size: 14px;
 	}
 
 	.header {
@@ -1153,6 +1115,11 @@ nav {
 
 	.page-counter {
 		font-size: 14px;
+	}
+
+	.not-found-text {
+		font-size: 14px;
+		padding: 30px;
 	}
 
 	.pokedex-grid {
