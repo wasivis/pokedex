@@ -3,7 +3,7 @@ import "./styles.css";
 import Navbar from "./components/Navbar";
 import Searchbar from "./components/Searchbar";
 import Pokedex from "./components/Pokedex";
-import { getPokemonData, getPokemon, searchPokemon } from "./api";
+import { getPokemonData, getPokemon } from "./api";
 import { FavoriteProvider } from "./contexts/favoritesContext";
 import Footer from "./components/Footer";
 import Filters from "./components/Filters";
@@ -106,6 +106,7 @@ export default function App() {
 			filteredPokemon.sort((a, b) => (a.name < b.name ? -1 : 1));
 		}
 		setPokemon(filteredPokemon);
+		setCurrentPage(1);
 		//eslint-disable-next-line
 	}, [selectedRegion, selectedType, selectedSorting]);
 
