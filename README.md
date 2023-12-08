@@ -1,4 +1,4 @@
-This is my first fullstack React project! It's a Pokedex made using JavaScript, Typescript, HTML, CSS and data from the PokeAPI.
+This is my first ReactJS project! It's a Pokedex made using JavaScript, Typescript, HTML, CSS and data from the PokeAPI.
 
 Features:
 
