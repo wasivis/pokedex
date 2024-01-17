@@ -104,28 +104,28 @@ const PokemonDetailModal = (props) => {
 							{pokemonDetails?.genera[7].genus}
 						</div>
 						<div className="modal-varieties">
-							<p>Varieties:</p>
-							<select
-								className="selectVariety-box"
-								id="selectVarietyId"
-								f
-								aria-label="Choose Pokemon Variety"
-								name="variety-list"
-								onChange={(e) => setSelectedVariety(e.target.value)}
-							>
-								{pokemonDetails?.varieties.map((variety, idx) => {
-									return (
-										<option value={variety.pokemon.url}>
-											{variety.pokemon.name
-												.replace(/-/g, " ")
-												.replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
-													letter.toUpperCase()
-												)}
-										</option>
-									);
-								})}
-							</select>
-						</div>
+    <p>Varieties:</p>
+    <select
+      key={pokemon ? pokemon.id : ''}
+      className="selectVariety-box"
+      id="selectVarietyId"
+      aria-label="Choose Pokemon Variety"
+      name="variety-list"
+      onChange={(e) => setSelectedVariety(e.target.value)}
+    >
+      {pokemonDetails?.varieties.map((variety, idx) => {
+        return (
+          <option value={variety.pokemon.url}>
+            {variety.pokemon.name
+              .replace(/-/g, " ")
+              .replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
+                letter.toUpperCase(),
+              )}
+          </option>
+        );
+      })}
+    </select>
+  </div>
 						<div className="modal-img" key="idx">
 							{/*eslint-disable-next-line*/}
 							<img src={imageURL} alt={pokemon?.name} />
